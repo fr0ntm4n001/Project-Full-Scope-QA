@@ -1,11 +1,15 @@
-# 🎯 SQA Portfolio - Full-Stack QA Automation
+# 🎯 AI Voice Assistant Web-App Full Scope QA
 
 ![QA Badge](https://img.shields.io/badge/QA-Automation-blue)
+![QA Manual](https://img.shields.io/badge/QA%20Manual-Testing-blue?logo=testing-library&logoColor=white)
 ![Playwright](https://img.shields.io/badge/Playwright-Latest-green)
 ![Node.js](https://img.shields.io/badge/Node.js-18+-brightgreen)
-![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-orange)
+![CI/CD](https://img.shields.io/badge/GitLab-FC6D26?logo=gitlab&logoColor=white)
+![Postman](https://img.shields.io/badge/Postman-FF6C37?logo=postman&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)
 
-> A comprehensive Software Quality Assurance portfolio demonstrating end-to-end testing automation, manual testing strategies, and QA best practices using modern tools and frameworks.
+
+>Comprehensive QA of the Convoa AI Voice Assistant, combining manual testing, automated test execution, and performance benchmarking. This project covers test planning, case design, detailed bug reporting, and CI/CD pipeline integration — showcasing end-to-end quality assurance practices using modern tools and frameworks that ensure scalability, reliability, and seamless functionality.
 
 ## 📋 Table of Contents
 - [Project Overview](#-project-overview)
@@ -394,3 +398,4 @@ npm run docs:serve
 
 ---
 *Last Updated: [Current Date] | Test Suite Version: 2.1.0*
+
