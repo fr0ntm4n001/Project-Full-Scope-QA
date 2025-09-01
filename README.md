@@ -24,15 +24,28 @@
 - [Contributing](#-contributing)
 
 ## 🎯 Project Overview
+Convoa is an AI-powered voice assistant platform designed to transform how businesses handle customer communication. Acting as a 24/7 virtual receptionist, it manages inbound and outbound calls, schedules appointments, qualifies leads, and seamlessly integrates with business tools—all while providing real-time insights.
 
-This portfolio showcases a complete QA automation framework built with **Playwright**, demonstrating:
-- **Manual & Automated Testing** strategies
-- **Cross-browser compatibility** testing
-- **API testing** and validation
-- **Performance testing** fundamentals
-- **CI/CD integration** with GitHub Actions
-- **Comprehensive reporting** with Allure and HTML reports
-- **Test case management** and documentation
+This QA portfolio project demonstrates the **end-to-end testing strategy** applied to Convoa AI-powered voice assistant platform, featuring:  
+- ✅ **Manual & Automated Testing** strategies  
+- ✅ **Cross-browser compatibility** validation  
+- ✅ **API testing** and response validation  
+- ✅ **Performance testing** and benchmarking  
+- ✅ **CI/CD integration** with GitHub Actions  
+- ✅ **Comprehensive reporting** (Allure & HTML reports)  
+- ✅ **Test case management** and documentation
+
+
+### 📚 QA Documentation
+| Document | Description |
+|----------|-------------|
+| [Test Strategy](docs/Test_Strategy.md) | High-level testing approach and methodologies |
+| [Test Plan](docs/Test_Plan.md) | Detailed test planning and scope |
+| [Bug Life Cycle](docs/Bug_Life_Cycle.md) | Bug tracking and resolution process |
+| [QA Process](docs/QA_Process.md) | Quality assurance workflows |
+| [Tools Used](docs/Tools_Used.md) | Technology stack and tool justification |
+
+
 
 ### 🎪 Live Demo
 - **Test Reports**: [View Latest Test Results](link-to-github-pages)
@@ -216,14 +229,7 @@ npm run test:prod:smoke
   ```
 - **JUnit Reports**: XML format for CI/CD integration
 
-### 📚 QA Documentation
-| Document | Description |
-|----------|-------------|
-| [Test Strategy](docs/Test_Strategy.md) | High-level testing approach and methodologies |
-| [Test Plan](docs/Test_Plan.md) | Detailed test planning and scope |
-| [Bug Life Cycle](docs/Bug_Life_Cycle.md) | Bug tracking and resolution process |
-| [QA Process](docs/QA_Process.md) | Quality assurance workflows |
-| [Tools Used](docs/Tools_Used.md) | Technology stack and tool justification |
+
 
 ## 🔄 CI/CD Pipeline
 
@@ -398,4 +404,5 @@ npm run docs:serve
 
 ---
 *Last Updated: [Current Date] | Test Suite Version: 2.1.0*
+
 
