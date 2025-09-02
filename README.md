@@ -24,16 +24,8 @@
 - [Contributing](#-contributing)
 
 ## 🎯 Project Overview
-Convoa is an AI-powered voice assistant platform designed to transform how businesses handle customer communication. Acting as a 24/7 virtual receptionist, it manages inbound and outbound calls, schedules appointments, qualifies leads, and seamlessly integrates with business tools—all while providing real-time insights.
+Convoa is an AI-powered voice assistant platform that transforms how businesses manage customer communication by acting as a 24/7 virtual receptionist. It handles inbound and outbound calls, schedules appointments, qualifies leads, and seamlessly integrates with thousands of business tools while providing real-time insights.Its natural, human-like voice that adapts to customer interactions, creating more authentic conversations. Beyond call handling, it manages bookings, orders, and even job planning through features like service heat maps, helping businesses optimize resources based on geographic and team data.
 
-This QA portfolio project demonstrates the **end-to-end testing strategy** applied to Convoa AI-powered voice assistant platform, featuring:  
-- ✅ **Manual & Automated Testing** strategies  
-- ✅ **Cross-browser compatibility** validation  
-- ✅ **API testing** and response validation  
-- ✅ **Performance testing** and benchmarking  
-- ✅ **CI/CD integration** with GitHub Actions  
-- ✅ **Comprehensive reporting** (Allure & HTML reports)  
-- ✅ **Test case management** and documentation
 
 
 ### 📚 QA Documentation
@@ -404,5 +396,6 @@ npm run docs:serve
 
 ---
 *Last Updated: [Current Date] | Test Suite Version: 2.1.0*
+
 
 
