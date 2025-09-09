@@ -37,7 +37,7 @@ Convoa is an AI-powered voice assistant platform that transforms how businesses 
 | [QA Process](docs/QA_Process.md) | Quality assurance workflows |
 | [Tools Used](docs/Tools_Used.md) | Technology stack and tool justification |
 
-
+## 🧪 Test Cases / Test Design (Manual)
 
 ### 🎪 Live Demo
 - **Test Reports**: [View Latest Test Results](link-to-github-pages)
@@ -396,6 +396,7 @@ npm run docs:serve
 
 ---
 *Last Updated: [Current Date] | Test Suite Version: 2.1.0*
+
 
 
 
