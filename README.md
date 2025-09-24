@@ -41,8 +41,122 @@ Convoa is an AI-powered voice assistant platform that transforms how businesses 
 <img width="1157" height="548" alt="Screenshot 2025-09-24 at 16 24 09" src="https://github.com/user-attachments/assets/d4756ed9-a137-481f-a0c6-222d2488bb4a" />
 <br><br>
 <img width="1022" height="568" alt="Screenshot 2025-09-24 at 16 25 53" src="https://github.com/user-attachments/assets/930e32ab-eede-4cd0-89e4-e8029995c5d5" />
+<br>
+🔎 Explore Detailed Test Cases (link to sheet dir)
 
+## 2. Cypress Test Scripts
 
+Cypress is used for automated end-to-end testing of the website’s UI. Below are sample test scripts for key scenarios.
+
+### Sample Test: `login.cy.js`
+
+```javascript
+describe("E-Commerce Login Tests", () => {
+  beforeEach(() => {
+    cy.visit("https://www.saucedemo.com/");
+  });
+
+  it("should login with valid credentials", () => {
+    cy.get("#user-name").type("standard_user");
+    cy.get("#password").type("secret_sauce");
+    cy.get("#login-button").click();
+    cy.url().should("include", "/inventory.html");
+    cy.get(".inventory_list").should("be.visible");
+  });
+
+  it("should show error for invalid credentials", () => {
+    cy.get("#user-name").type("invalid_user");
+    cy.get("#password").type("wrong_password");
+    cy.get("#login-button").click();
+    cy.get('[data-test="error"]').should(
+      "contain",
+      "Username and password do not match"
+    );
+  });
+});
+```
+
+### Sample Test: `add_to_cart.cy.js`
+
+```javascript
+describe("E-Commerce Cart Tests", () => {
+  beforeEach(() => {
+    cy.visit("https://www.saucedemo.com/");
+    cy.get("#user-name").type("standard_user");
+    cy.get("#password").type("secret_sauce");
+    cy.get("#login-button").click();
+  });
+
+  it("should add item to cart", () => {
+    cy.get("#add-to-cart-sauce-labs-backpack").click();
+    cy.get(".shopping_cart_badge").should("have.text", "1");
+  });
+});
+```
+
+### Sample Test: `checkout.cy.js`
+
+```javascript
+describe("E-Commerce Checkout Tests", () => {
+  beforeEach(() => {
+    cy.visit("https://www.saucedemo.com/");
+    cy.get("#user-name").type("standard_user");
+    cy.get("#password").type("secret_sauce");
+    cy.get("#login-button").click();
+    cy.get("#add-to-cart-sauce-labs-backpack").click();
+    cy.get(".shopping_cart_link").click();
+    cy.get("#checkout").click();
+  });
+
+  it("should complete checkout", () => {
+    cy.get("#first-name").type("John");
+    cy.get("#last-name").type("Doe");
+    cy.get("#postal-code").type("12345");
+    cy.get("#continue").click();
+    cy.get("#finish").click();
+    cy.get(".complete-header").should("contain", "Thank you for your order");
+  });
+});
+```
+
+### Cypress Configuration: `cypress.config.js`
+
+```javascript
+const { defineConfig } = require("cypress");
+
+module.exports = defineConfig({
+  e2e: {
+    baseUrl: "https://www.saucedemo.com/",
+    reporter: "mochawesome",
+    reporterOptions: {
+      reportDir: "cypress/reports/mochawesome-report",
+      overwrite: false,
+      html: true,
+      json: true,
+    },
+  },
+});
+```
+
+---
+
+## 3. Test Reports
+
+Test reports are generated for both Cypress and JMeter tests.
+
+### Cypress Reports
+
+- **Location**: `cypress/reports/mochawesome-report/mochawesome.html`
+- **Contents**: Pass/fail status, execution time, screenshots for failed tests, detailed logs.
+- **Sample Output**: 8/8 test cases passed for login, cart, and checkout.
+
+### JMeter Reports
+
+- **Location**: `jmeter/reports/performance_report.html`, `jmeter/reports/performance_summary.csv`
+- **Contents**: Response times, throughput, error rates, graphical analysis.
+- **Sample Output**: Average response time of 1.2s for 100 concurrent users, 0% error rate.
+
+---
 
 
 ### 🎪 Live Demo
@@ -402,6 +516,7 @@ npm run docs:serve
 
 ---
 *Last Updated: [Current Date] | Test Suite Version: 2.1.0*
+
 
 
 
