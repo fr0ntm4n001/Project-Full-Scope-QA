@@ -8,10 +8,10 @@
 ![Postman](https://img.shields.io/badge/Postman-FF6C37?logo=postman&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)
 
-
->Comprehensive QA of the Convoa AI Voice Assistant, combining manual testing, automated test execution, and performance benchmarking. This project covers test planning, case design, detailed bug reporting, and CI/CD pipeline integration — showcasing end-to-end quality assurance practices using modern tools and frameworks that ensure scalability, reliability, and seamless functionality.
+> Comprehensive QA of the Convoa AI Voice Assistant, combining manual testing, automated test execution, and performance benchmarking. This project covers test planning, case design, detailed bug reporting, and CI/CD pipeline integration — showcasing end-to-end quality assurance practices using modern tools and frameworks that ensure scalability, reliability, and seamless functionality.
 
 ## 📋 Table of Contents
+
 - [Project Overview](#-project-overview)
 - [Features](#-features)
 - [Technology Stack](#-technology-stack)
@@ -24,55 +24,100 @@
 - [Contributing](#-contributing)
 
 ## 🎯 Project Overview
+
 Convoa is an AI-powered voice assistant platform that transforms how businesses manage customer communication by acting as a 24/7 virtual receptionist. It handles inbound and outbound calls, schedules appointments, qualifies leads, and seamlessly integrates with thousands of business tools while providing real-time insights.Its natural, human-like voice that adapts to customer interactions, creating more authentic conversations. Beyond call handling, it manages bookings, orders, and even job planning through features like service heat maps, helping businesses optimize resources based on geographic and team data.
 
-
-
 ### 📚 QA Documentation
-| Document | Description |
-|----------|-------------|
-| [Test Strategy](docs/Test_Strategy.md) | High-level testing approach and methodologies |
-| [Test Plan](docs/Test_Plan.md) | Detailed test planning and scope |
-| [Bug Life Cycle](docs/Bug_Life_Cycle.md) | Bug tracking and resolution process |
-| [QA Process](docs/QA_Process.md) | Quality assurance workflows |
-| [Tools Used](docs/Tools_Used.md) | Technology stack and tool justification |
+
+| Document                                 | Description                                   |
+| ---------------------------------------- | --------------------------------------------- |
+| [Test Strategy](docs/Test_Strategy.md)   | High-level testing approach and methodologies |
+| [Test Plan](docs/Test_Plan.md)           | Detailed test planning and scope              |
+| [Bug Life Cycle](docs/Bug_Life_Cycle.md) | Bug tracking and resolution process           |
+| [QA Process](docs/QA_Process.md)         | Quality assurance workflows                   |
+| [Tools Used](docs/Tools_Used.md)         | Technology stack and tool justification       |
 
 ## 🧪 Test Cases
+
 <img width="1157" height="548" alt="Screenshot 2025-09-24 at 16 24 09" src="https://github.com/user-attachments/assets/d4756ed9-a137-481f-a0c6-222d2488bb4a" />
 <br><br>
 <img width="1022" height="568" alt="Screenshot 2025-09-24 at 16 25 53" src="https://github.com/user-attachments/assets/930e32ab-eede-4cd0-89e4-e8029995c5d5" />
 <br>
 🔎 Explore Detailed Test Cases (link to sheet dir)
 
-## 2. Cypress Test Scripts
+## 2. Playwright Test Scripts
 
 Cypress is used for automated end-to-end testing of the website’s UI. Below are sample test scripts for key scenarios.
 
-### Sample Test: `login.cy.js`
+### Sample Test: `login.spec.js`
 
 ```javascript
-describe("E-Commerce Login Tests", () => {
-  beforeEach(() => {
-    cy.visit("https://www.saucedemo.com/");
+test.beforeEach(async ({ page }) => {
+  // Navigate to login page with proper error handling
+  await page.goto(`${testData.baseUrl}/login`, {
+    waitUntil: "domcontentloaded",
+    timeout: 60000,
+  });
+});
+
+/**
+ * TC001: Complete Login Flow with Tour Guide Handling and Logout
+ * Tests: Valid login → Dashboard navigation → Tour popup handling → Logout flow
+ */
+test("TC001 - Valid login with complete user journey", async ({ page }) => {
+  // Wait for login form elements to be ready
+  await page.waitForSelector('input[placeholder="Email Address"]', {
+    timeout: 10000,
+  });
+  await page.waitForSelector('input[placeholder="Password"]', {
+    timeout: 10000,
   });
 
-  it("should login with valid credentials", () => {
-    cy.get("#user-name").type("standard_user");
-    cy.get("#password").type("secret_sauce");
-    cy.get("#login-button").click();
-    cy.url().should("include", "/inventory.html");
-    cy.get(".inventory_list").should("be.visible");
-  });
+  // Perform login with realistic typing simulation
+  const emailInput = page.getByPlaceholder("Email Address");
+  const passwordInput = page.getByPlaceholder("Password");
 
-  it("should show error for invalid credentials", () => {
-    cy.get("#user-name").type("invalid_user");
-    cy.get("#password").type("wrong_password");
-    cy.get("#login-button").click();
-    cy.get('[data-test="error"]').should(
-      "contain",
-      "Username and password do not match"
-    );
-  });
+  await emailInput.waitFor({ timeout: 5000 });
+  await emailInput.fill(testData.validEmail);
+  await page.waitForTimeout(500); // Simulate realistic typing speed
+
+  await passwordInput.waitFor({ timeout: 5000 });
+  await passwordInput.fill(testData.validPassword);
+  await page.waitForTimeout(500);
+
+  // Submit login form
+  const loginButton = page.getByRole("button", { name: "Login" });
+  await loginButton.waitFor({ timeout: 5000 });
+  await loginButton.click();
+
+  // Verify successful navigation to dashboard
+  await expect(page).toHaveURL(/dashboard/, { timeout: 60000 });
+
+  // Handle any tour guide popups that may appear
+  handleTourGuide(page);
+
+  // Logout flow demonstration
+  const dropdownToggle = page.locator(
+    'button.bg-transparent.border-0 >> img[alt="Open dropdown"]'
+  );
+  await expect(dropdownToggle).toBeVisible({ timeout: 5000 });
+  await dropdownToggle.click();
+  console.log("⬇️ User dropdown opened successfully");
+
+  const logoutLink = page.locator('a.dropdown-item:has-text("Log Out")');
+  await expect(logoutLink).toBeVisible({ timeout: 5000 });
+  await logoutLink.click();
+
+  const logoutButton = page.locator(
+    'button.btn-warning-amber:text-is("Log Out")'
+  );
+  await expect(logoutButton).toBeVisible({ timeout: 5000 });
+  await logoutButton.click();
+
+  console.log("🚪 Logout completed successfully");
+
+  // Verify redirect back to login page
+  await expect(page).toHaveURL(/\/login$/, { timeout: 50000 });
 });
 ```
 
@@ -158,14 +203,15 @@ Test reports are generated for both Cypress and JMeter tests.
 
 ---
 
-
 ### 🎪 Live Demo
+
 - **Test Reports**: [View Latest Test Results](link-to-github-pages)
 - **Application Under Test**: [Demo App](link-if-available)
 
 ## ✨ Features
 
 ### 🔧 Automation Capabilities
+
 - ✅ **End-to-End Testing** with Playwright
 - ✅ **Cross-browser Testing** (Chrome, Firefox, Safari, Edge)
 - ✅ **Mobile Responsive Testing**
@@ -175,6 +221,7 @@ Test reports are generated for both Cypress and JMeter tests.
 - ✅ **Performance Testing** basics
 
 ### 📊 Reporting & Analytics
+
 - ✅ **Allure Reports** with detailed test analytics
 - ✅ **HTML Reports** with screenshots and videos
 - ✅ **Test Coverage Metrics**
@@ -182,6 +229,7 @@ Test reports are generated for both Cypress and JMeter tests.
 - ✅ **Custom Dashboards**
 
 ### 🔄 Process Integration
+
 - ✅ **GitHub Actions CI/CD**
 - ✅ **Automated Test Execution** on PR/Push
 - ✅ **Slack/Email Notifications**
@@ -189,15 +237,15 @@ Test reports are generated for both Cypress and JMeter tests.
 
 ## 🛠 Technology Stack
 
-| Category | Tools & Technologies |
-|----------|---------------------|
-| **Test Automation** | Playwright, Node.js, TypeScript/JavaScript |
-| **API Testing** | Playwright API, Postman Collections |
-| **Reporting** | Allure Framework, HTML Reports, Custom Dashboards |
-| **CI/CD** | GitHub Actions, Docker |
-| **Documentation** | Markdown, Confluence Integration |
-| **Test Management** | Custom JSON/CSV formats, Excel Integration |
-| **Performance** | Lighthouse, WebPageTest Integration |
+| Category            | Tools & Technologies                              |
+| ------------------- | ------------------------------------------------- |
+| **Test Automation** | Playwright, Node.js, TypeScript/JavaScript        |
+| **API Testing**     | Playwright API, Postman Collections               |
+| **Reporting**       | Allure Framework, HTML Reports, Custom Dashboards |
+| **CI/CD**           | GitHub Actions, Docker                            |
+| **Documentation**   | Markdown, Confluence Integration                  |
+| **Test Management** | Custom JSON/CSV formats, Excel Integration        |
+| **Performance**     | Lighthouse, WebPageTest Integration               |
 
 ## 📁 Project Structure
 
@@ -253,6 +301,7 @@ sqa-portfolio/
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js 18+ installed
 - Git installed
 - Chrome/Firefox browsers
@@ -260,18 +309,21 @@ sqa-portfolio/
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/yourusername/sqa-portfolio.git
    cd sqa-portfolio
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    npx playwright install
    ```
 
 3. **Environment setup**
+
    ```bash
    cp config/environments.example.json config/environments.json
    # Edit environments.json with your test environment URLs
@@ -285,6 +337,7 @@ sqa-portfolio/
 ## 🧪 Test Execution
 
 ### Run All Tests
+
 ```bash
 # Run complete test suite
 npm run test
@@ -296,6 +349,7 @@ npm run test:safari
 ```
 
 ### Test Categories
+
 ```bash
 # End-to-end tests
 npm run test:e2e
@@ -317,6 +371,7 @@ npm run test:debug
 ```
 
 ### Environment-Specific Testing
+
 ```bash
 # Development environment
 npm run test:dev
@@ -331,6 +386,7 @@ npm run test:prod:smoke
 ## 📊 Reports & Documentation
 
 ### 📈 Test Reports
+
 - **Allure Reports**: Interactive test results with trends and analytics
   ```bash
   npm run report:allure
@@ -341,17 +397,17 @@ npm run test:prod:smoke
   ```
 - **JUnit Reports**: XML format for CI/CD integration
 
-
-
 ## 🔄 CI/CD Pipeline
 
 ### GitHub Actions Workflow
+
 - **Automated Testing**: Triggered on every PR and push
 - **Multi-browser Testing**: Parallel execution across browsers
 - **Report Generation**: Automatic report publishing
 - **Slack Notifications**: Test result notifications
 
 ### Pipeline Features
+
 ```yaml
 # Trigger events
 - Push to main/develop branches
@@ -369,6 +425,7 @@ npm run test:prod:smoke
 ## 🎯 QA Methodologies
 
 ### Testing Approaches
+
 - **Risk-Based Testing**: Prioritizing high-risk areas
 - **Behavior-Driven Development (BDD)**: User story-driven test cases
 - **Data-Driven Testing**: Parameterized test execution
@@ -376,6 +433,7 @@ npm run test:prod:smoke
 - **API-First Testing**: Backend validation before UI tests
 
 ### Quality Metrics
+
 - **Test Coverage**: Functional and code coverage tracking
 - **Defect Density**: Bug discovery and resolution rates
 - **Test Execution Time**: Performance optimization metrics
@@ -384,6 +442,7 @@ npm run test:prod:smoke
 ## 📊 Sample Test Results
 
 ### Latest Test Run Summary
+
 ```
 ✅ Total Tests: 156
 ✅ Passed: 152 (97.4%)
@@ -394,6 +453,7 @@ npm run test:prod:smoke
 ```
 
 ### Test Coverage
+
 - **E2E Coverage**: 85% of user journeys
 - **API Coverage**: 92% of endpoints
 - **Cross-browser**: 100% compatibility
@@ -402,6 +462,7 @@ npm run test:prod:smoke
 ## 🔧 Configuration
 
 ### Playwright Configuration
+
 ```javascript
 // Key configuration highlights
 - Multiple browsers (Chromium, Firefox, WebKit)
@@ -412,17 +473,18 @@ npm run test:prod:smoke
 ```
 
 ### Environment Management
+
 - **Development**: Local testing environment
 - **Staging**: Pre-production validation
 - **Production**: Smoke test monitoring
 
 ## 🐛 Sample Bug Reports
 
-| Bug ID | Severity | Status | Description | Found In |
-|---------|----------|---------|-------------|----------|
-| BUG-001 | High | Fixed | Login fails with special characters | E2E Testing |
-| BUG-002 | Medium | Open | Slow API response on user creation | API Testing |
-| BUG-003 | Low | Fixed | UI alignment issue on mobile | Visual Testing |
+| Bug ID  | Severity | Status | Description                         | Found In       |
+| ------- | -------- | ------ | ----------------------------------- | -------------- |
+| BUG-001 | High     | Fixed  | Login fails with special characters | E2E Testing    |
+| BUG-002 | Medium   | Open   | Slow API response on user creation  | API Testing    |
+| BUG-003 | Low      | Fixed  | UI alignment issue on mobile        | Visual Testing |
 
 ## 🏆 QA Achievements
 
@@ -435,12 +497,14 @@ npm run test:prod:smoke
 ## 🛠 Tools & Integrations
 
 ### Core Testing Tools
+
 - **Playwright**: Primary automation framework
 - **Allure**: Advanced reporting and analytics
 - **Jest**: Unit testing framework
 - **Postman**: API testing and documentation
 
 ### Supporting Tools
+
 - **Docker**: Containerized test environments
 - **Jenkins**: Alternative CI/CD option
 - **Jira**: Bug tracking integration
@@ -449,17 +513,20 @@ npm run test:prod:smoke
 ## 📈 Getting Started as a QA Engineer
 
 ### For Manual Testers
+
 1. Review [QA Process Documentation](docs/QA_Process.md)
 2. Explore manual test cases in `test-cases/manual/`
 3. Understand the bug life cycle process
 
 ### For Automation Engineers
+
 1. Set up the development environment
 2. Review Page Object Model implementation
 3. Run sample test suites
 4. Explore CI/CD integration
 
 ### For QA Managers
+
 1. Review test strategy and planning documents
 2. Analyze test metrics and reports
 3. Understand automation ROI and coverage
@@ -476,6 +543,7 @@ Interested in improving this QA framework? Here's how you can contribute:
 6. **Open** a Pull Request
 
 ### Coding Standards
+
 - Follow Page Object Model patterns
 - Add appropriate test documentation
 - Maintain test data independence
@@ -515,10 +583,5 @@ npm run docs:serve
 **Ready to explore quality assurance excellence?** Start with `npm run demo` and dive into the world of comprehensive QA automation! 🚀
 
 ---
-*Last Updated: [Current Date] | Test Suite Version: 2.1.0*
 
-
-
-
-
-
+_Last Updated: [Current Date] | Test Suite Version: 2.1.0_
