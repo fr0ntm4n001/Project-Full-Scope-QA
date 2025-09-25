@@ -83,21 +83,35 @@ test("Empty Email & Empty Password", async ({ page }) => {
 });
 ```
 
-### Sample Test: `add_to_cart.cy.js`
+### Sample Test: `Assistants.spec.js`
 
 ```javascript
-describe("E-Commerce Cart Tests", () => {
-  beforeEach(() => {
-    cy.visit("https://www.saucedemo.com/");
-    cy.get("#user-name").type("standard_user");
-    cy.get("#password").type("secret_sauce");
-    cy.get("#login-button").click();
-  });
+test("Should show error when creating assistant with duplicate ID", async ({
+  page,
+}) => {
+  await login(page);
+  await navigateToAssistants(page);
 
-  it("should add item to cart", () => {
-    cy.get("#add-to-cart-sauce-labs-backpack").click();
-    cy.get(".shopping_cart_badge").should("have.text", "1");
-  });
+  const uniqueId = generateRandomId("duplicate");
+
+  // First creation
+  await page.getByRole("button", { name: "Add" }).click();
+  await page.getByPlaceholder("Enter Assistant's ID").fill(uniqueId);
+  await page.getByRole("button", { name: "Create Assistant" }).click();
+  await expect(
+    page.getByRole("heading", { name: /Create New Assistant/i })
+  ).toBeHidden({ timeout: 10000 });
+
+  // Duplicate attempt
+  await page.getByRole("button", { name: "Add" }).click();
+  await page.getByPlaceholder("Enter Assistant's ID").fill(uniqueId);
+  await page.getByRole("button", { name: "Create Assistant" }).click();
+
+  const errorMessage = page.locator(
+    "text=/Assistant with this name already exists/i"
+  );
+  await expect(errorMessage).toBeVisible();
+  console.log("✅ Duplicate ID error correctly shown.");
 });
 ```
 
