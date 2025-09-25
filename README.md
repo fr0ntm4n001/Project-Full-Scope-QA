@@ -52,72 +52,34 @@ Cypress is used for automated end-to-end testing of the website’s UI. Below ar
 ### Sample Test: `login.spec.js`
 
 ```javascript
-test.beforeEach(async ({ page }) => {
-  // Navigate to login page with proper error handling
-  await page.goto(`${testData.baseUrl}/login`, {
-    waitUntil: "domcontentloaded",
-    timeout: 60000,
-  });
+// ✅ TC2: Login with "Remember me"
+test('should keep user logged in when "Remember for 30 days" is checked', async ({
+  page,
+  context,
+}) => {
+  await page.getByPlaceholder("Email Address").fill(validEmail);
+  await page.getByPlaceholder("Password").fill(validPassword);
+  await page.locator("#rememberMe").check();
+  await page.getByRole("button", { name: "Login" }).click();
+
+  await expect(page).toHaveURL(/dashboard/);
+
+  // Simulate new session
+  const newContext = await context.browser().newContext();
+  const newPage = await newContext.newPage();
+  await newPage.goto("https://demo-app.example.com/dashboard");
+  await expect(newPage).toHaveURL(/dashboard/);
 });
 
-/**
- * TC001: Complete Login Flow with Tour Guide Handling and Logout
- * Tests: Valid login → Dashboard navigation → Tour popup handling → Logout flow
- */
-test("TC001 - Valid login with complete user journey", async ({ page }) => {
-  // Wait for login form elements to be ready
-  await page.waitForSelector('input[placeholder="Email Address"]', {
-    timeout: 10000,
-  });
-  await page.waitForSelector('input[placeholder="Password"]', {
-    timeout: 10000,
-  });
+//////////////////////////////////////////////////////////////////////////
 
-  // Perform login with realistic typing simulation
-  const emailInput = page.getByPlaceholder("Email Address");
-  const passwordInput = page.getByPlaceholder("Password");
-
-  await emailInput.waitFor({ timeout: 5000 });
-  await emailInput.fill(testData.validEmail);
-  await page.waitForTimeout(500); // Simulate realistic typing speed
-
-  await passwordInput.waitFor({ timeout: 5000 });
-  await passwordInput.fill(testData.validPassword);
-  await page.waitForTimeout(500);
-
-  // Submit login form
-  const loginButton = page.getByRole("button", { name: "Login" });
-  await loginButton.waitFor({ timeout: 5000 });
-  await loginButton.click();
-
-  // Verify successful navigation to dashboard
-  await expect(page).toHaveURL(/dashboard/, { timeout: 60000 });
-
-  // Handle any tour guide popups that may appear
-  handleTourGuide(page);
-
-  // Logout flow demonstration
-  const dropdownToggle = page.locator(
-    'button.bg-transparent.border-0 >> img[alt="Open dropdown"]'
-  );
-  await expect(dropdownToggle).toBeVisible({ timeout: 5000 });
-  await dropdownToggle.click();
-  console.log("⬇️ User dropdown opened successfully");
-
-  const logoutLink = page.locator('a.dropdown-item:has-text("Log Out")');
-  await expect(logoutLink).toBeVisible({ timeout: 5000 });
-  await logoutLink.click();
-
-  const logoutButton = page.locator(
-    'button.btn-warning-amber:text-is("Log Out")'
-  );
-  await expect(logoutButton).toBeVisible({ timeout: 5000 });
-  await logoutButton.click();
-
-  console.log("🚪 Logout completed successfully");
-
-  // Verify redirect back to login page
-  await expect(page).toHaveURL(/\/login$/, { timeout: 50000 });
+// ✅ TC3: Empty Email & Empty Password
+test("Empty Email & Empty Password", async ({ page }) => {
+  await page.getByRole("button", { name: "Login" }).click();
+  await expect(page.locator("text=Email Address is required")).toBeVisible();
+  await expect(
+    page.locator("text=Password must be at least 8 characters long")
+  ).toBeVisible();
 });
 ```
 
