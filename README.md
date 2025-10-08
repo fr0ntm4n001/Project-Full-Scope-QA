@@ -190,6 +190,11 @@ Test reports are generated for both Cypress and JMeter tests.
 ### Playwright Reports
 
 Below is a snapshot from my automated UI test reports generated using Microsoft Playwright.
+<img width="1351" height="778" alt="Screenshot 2025-10-08 at 18 57 56" src="https://github.com/user-attachments/assets/b248714a-d2c8-4b06-ae7f-9bb415120911" />
+<br><br>
+<img width="1351" height="778" alt="Screenshot 2025-10-08 at 18 58 36" src="https://github.com/user-attachments/assets/d8a1c9ff-1e13-4738-b358-0ddf27718c72" />
+
+
 
 [🔎 View Detailed Reports ](Test-Reports/)
 
@@ -587,3 +592,4 @@ npm run docs:serve
 ---
 
 _Last Updated: [Current Date] | Test Suite Version: 2.1.0_
+
