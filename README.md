@@ -179,6 +179,8 @@ export default defineConfig({
 });
 ```
 
+[🔎 View Playwright Configuration File ](Test-Scripts/)
+
 ---
 
 ## 3. Test Reports
