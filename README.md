@@ -42,12 +42,12 @@ Convoa is an AI-powered voice assistant platform that transforms how businesses 
 <img width="1157" height="548" alt="Screenshot 2025-09-24 at 16 24 09" src="https://github.com/user-attachments/assets/d4756ed9-a137-481f-a0c6-222d2488bb4a" />
 <br><br>
 <img width="1022" height="568" alt="Screenshot 2025-09-24 at 16 25 53" src="https://github.com/user-attachments/assets/930e32ab-eede-4cd0-89e4-e8029995c5d5" />
-<br>
-[🔎 Explore Deatailed Test Cases ](Test-Cases/)
+
+[🔎 Explore Detailed Test Cases](../Test-Cases/)
 
 ## 2. Playwright Test Scripts
 
-Cypress is used for automated end-to-end testing of the website’s UI. Below are sample test scripts for key scenarios.
+Playwright is the primary framework used for automated end-to-end testing in this project. It enables reliable, cross-browser automation across Chromium, Firefox and WebKit, supports powerful selector strategies, network interception, tracing, screenshots and video recording, parallel test execution, and built-in test fixtures.
 
 ### Sample Test: `login.spec.js`
 
