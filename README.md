@@ -187,10 +187,14 @@ export default defineConfig({
 
 Test reports are generated for both Cypress and JMeter tests.
 
-### Cypress Reports
+### Playwright Reports
 
-- **Location**: `cypress/reports/mochawesome-report/mochawesome.html`
+Below is a snapshot from my automated UI test reports generated using Microsoft Playwright.
+
+[🔎 View Detailed Reports ](Test-Reports/)
+
 - **Contents**: Pass/fail status, execution time, screenshots for failed tests, detailed logs.
+
 - **Sample Output**: 8/8 test cases passed for login, cart, and checkout.
 
 ### JMeter Reports
