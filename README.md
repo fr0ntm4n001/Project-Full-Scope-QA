@@ -83,6 +83,8 @@ test("Empty Email & Empty Password", async ({ page }) => {
 });
 ```
 
+[🔎 Explore Detailed Test Cases (link to sheet dir)](test-cases/)
+
 ### Sample Test: `Assistants.spec.js`
 
 ```javascript
@@ -115,6 +117,8 @@ test("Should show error when creating assistant with duplicate ID", async ({
 });
 ```
 
+[🔎 Explore Detailed Test Cases (link to sheet dir)](test-cases/)
+
 ### Sample Test: `checkout.cy.js`
 
 ```javascript
@@ -139,6 +143,8 @@ describe("E-Commerce Checkout Tests", () => {
   });
 });
 ```
+
+[🔎 Explore Detailed Test Cases (link to sheet dir)](test-cases/)
 
 ### Playwright Configuration: `playwright.config.js`
 
