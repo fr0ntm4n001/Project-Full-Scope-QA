@@ -140,22 +140,36 @@ describe("E-Commerce Checkout Tests", () => {
 });
 ```
 
-### Cypress Configuration: `cypress.config.js`
+### Playwright Configuration: `playwright.config.js`
 
 ```javascript
-const { defineConfig } = require("cypress");
+import { defineConfig, devices } from "@playwright/test";
+
+@see https://playwright.dev/docs/test-configuration
 
 module.exports = defineConfig({
-  e2e: {
-    baseUrl: "https://www.saucedemo.com/",
-    reporter: "mochawesome",
-    reporterOptions: {
-      reportDir: "cypress/reports/mochawesome-report",
-      overwrite: false,
-      html: true,
-      json: true,
-    },
+import { defineConfig, devices } from "@playwright/test";
+
+export default defineConfig({
+  testDir: "./e2e-tests",
+  fullyParallel: true,
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 2 : 1,
+  workers: process.env.CI ? 1 : undefined,
+  reporter: "html",
+  use: {
+
+    trace: "on-first-retry",
+    navigationTimeout: 60000,
+    actionTimeout: 30000,
   },
+  timeout: 120000,
+  projects: [
+    {
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"] },
+    },
+  ],
 });
 ```
 
