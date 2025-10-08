@@ -43,7 +43,7 @@ Convoa is an AI-powered voice assistant platform that transforms how businesses 
 <br><br>
 <img width="1022" height="568" alt="Screenshot 2025-09-24 at 16 25 53" src="https://github.com/user-attachments/assets/930e32ab-eede-4cd0-89e4-e8029995c5d5" />
 <br>
-🔎 Explore Detailed Test Cases (link to sheet dir)
+[🔎 Explore Deatailed Test Cases ](Test-Cases/)
 
 ## 2. Playwright Test Scripts
 
@@ -83,7 +83,7 @@ test("Empty Email & Empty Password", async ({ page }) => {
 });
 ```
 
-[🔎 Explore Detailed Test Cases (link to sheet dir)](test-cases/)
+[🔎 View Full Test Script ](Test-Scripts/)
 
 ### Sample Test: `Assistants.spec.js`
 
@@ -117,7 +117,7 @@ test("Should show error when creating assistant with duplicate ID", async ({
 });
 ```
 
-[🔎 Explore Detailed Test Cases (link to sheet dir)](test-cases/)
+[🔎 View Full Test Script ](Test-Scripts/)
 
 ### Sample Test: `checkout.cy.js`
 
@@ -144,7 +144,7 @@ describe("E-Commerce Checkout Tests", () => {
 });
 ```
 
-[🔎 Explore Detailed Test Cases (link to sheet dir)](test-cases/)
+[🔎 View Full Test Script ](Test-Scripts/)
 
 ### Playwright Configuration: `playwright.config.js`
 
