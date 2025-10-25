@@ -195,7 +195,7 @@ Below is a snapshot from my automated UI test reports generated using Microsoft 
 <br><br>
 <img width="1351" height="778" alt="Screenshot 2025-10-08 at 18 58 36" src="https://github.com/user-attachments/assets/d8a1c9ff-1e13-4738-b358-0ddf27718c72" />
 
-[🔎 View Report html files ](Test-Reports/)
+[🔎 Get Report Html Files ](Test-Reports/)
 
 - **Contents**: Pass/fail status, execution time, screenshots for failed tests, detailed logs.
 
