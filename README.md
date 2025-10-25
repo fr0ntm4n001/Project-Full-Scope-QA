@@ -179,7 +179,7 @@ export default defineConfig({
 });
 ```
 
-[🔎 View Playwright Configuration File ](Test-Scripts/)
+[🔎 View Playwright Configuration File ](Configs/playwright.config.js)
 
 ---
 
