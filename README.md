@@ -182,8 +182,6 @@ export default defineConfig({
 
 ## 3. Test Reports
 
-Test reports are generated for both Cypress and JMeter tests.
-
 ### Playwright Reports
 
 Below is a snapshot from my automated UI test reports generated using Microsoft Playwright.
@@ -195,14 +193,6 @@ Below is a snapshot from my automated UI test reports generated using Microsoft 
 [🔎 Get Report Html Files ](Test-Reports/)
 
 - **Contents**: Pass/fail status, execution time, screenshots for failed tests, detailed logs.
-
-- **Sample Output**: 8/8 test cases passed for login, cart, and checkout.
-
-### JMeter Reports
-
-- **Location**: `jmeter/reports/performance_report.html`, `jmeter/reports/performance_summary.csv`
-- **Contents**: Response times, throughput, error rates, graphical analysis.
-- **Sample Output**: Average response time of 1.2s for 100 concurrent users, 0% error rate.
 
 ---
 
