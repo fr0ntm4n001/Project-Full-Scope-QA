@@ -198,10 +198,73 @@ Below is a snapshot from my automated UI test reports generated using Microsoft 
 
 ## 4. Bug Reproduction
 
-### 🎪 Live Demo
+This section demonstrates systematic bug identification, reproduction, and documentation practices.
 
-- **Test Reports**: [View Latest Test Results](link-to-github-pages)
-- **Application Under Test**: [Demo App](link-if-available)
+### Bug Report Example: Login Session Timeout
+
+**Bug ID:** BUG-2024-042  
+**Severity:** High  
+**Status:** Confirmed
+
+#### Bug Summary
+
+User session expires after 5 minutes despite selecting "Remember me for 30 days" during login.
+
+#### Steps to Reproduce
+
+1. Navigate to login page
+2. Enter valid credentials (email and password)
+3. Check the "Remember me for 30 days" checkbox
+4. Click Login button
+5. Wait for 5-6 minutes without activity
+6. Try to refresh or navigate to any page
+
+#### Expected Result
+
+- User should remain logged in for 30 days
+- Session should persist across browser sessions
+
+#### Actual Result
+
+- User session expires after 5 minutes
+- User redirected to login page
+- Error message: "Session expired. Please login again."
+
+#### Technical Details
+
+**Console Error:**
+
+```
+Error: JWT token expired
+Status: 401 Unauthorized
+```
+
+**Environment:**
+
+- Application: v2.3.1 (Staging)
+- Browser: Chrome 118
+- OS: macOS Sonoma 14.1
+
+#### Root Cause
+
+The rememberMe flag is not being passed to the backend token generation, causing default 5-minute expiration.
+
+#### Impact
+
+- High user impact - disrupts workflow
+- Affects all 2,500+ active users
+- No practical workaround available
+
+[🔎 View More Bug Reports](Bug-Reports/)
+
+---
+
+### 🎪 Additional Bug Examples
+
+For more bug reports and reproduction steps, visit:
+
+- [Bug Reports Repository](Bug-Reports/)
+- [Known Issues Tracker](https://github.com/issues)
 
 ## ✨ Features
 
@@ -275,159 +338,7 @@ sqa-portfolio/
 │   ├── html/                      # HTML reports
 │   ├── screenshots/               # Test screenshots
 │   └── videos/                    # Test execution videos
-├── 📁 src/                         # Sample application (optional)
-│   ├── pages/                     # Page Object Models
-│   ├── utils/                     # Helper utilities
-│   └── data/                      # Test data management
-├── 📁 tools/                       # Custom QA tools
-│   ├── test_case_generator.py     # Automated test case generation
-│   ├── report_generator.js        # Custom report tools
-│   └── data_seeder.js             # Test data setup
-├── 📁 .github/workflows/           # CI/CD configuration
-│   ├── ci.yml                     # Main CI pipeline
-│   └── nightly.yml                # Scheduled test runs
-├── 📁 config/                      # Configuration files
-│   ├── playwright.config.js       # Playwright configuration
-│   └── environments.json          # Environment settings
-├── 📋 package.json                 # Node.js dependencies
-└── 📋 package-lock.json           # Dependency lock file
-```
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js 18+ installed
-- Git installed
-- Chrome/Firefox browsers
-
-### Installation
-
-1. **Clone the repository**
-
-   ```bash
-   git clone https://github.com/yourusername/sqa-portfolio.git
-   cd sqa-portfolio
-   ```
-
-2. **Install dependencies**
-
-   ```bash
-   npm install
-   npx playwright install
-   ```
-
-3. **Environment setup**
-
-   ```bash
-   cp config/environments.example.json config/environments.json
-   # Edit environments.json with your test environment URLs
-   ```
-
-4. **Verify installation**
-   ```bash
-   npm run test:smoke
-   ```
-
-## 🧪 Test Execution
-
-### Run All Tests
-
-```bash
-# Run complete test suite
-npm run test
-
-# Run with specific browser
-npm run test:chrome
-npm run test:firefox
-npm run test:safari
-```
-
-### Test Categories
-
-```bash
-# End-to-end tests
-npm run test:e2e
-
-# API tests
-npm run test:api
-
-# Integration tests
-npm run test:integration
-
-# Smoke tests
-npm run test:smoke
-
-# Run tests in headed mode (visible browser)
-npm run test:headed
-
-# Debug mode
-npm run test:debug
-```
-
-### Environment-Specific Testing
-
-```bash
-# Development environment
-npm run test:dev
-
-# Staging environment
-npm run test:staging
-
-# Production smoke tests
-npm run test:prod:smoke
-```
-
-## 📊 Reports & Documentation
-
-### 📈 Test Reports
-
-- **Allure Reports**: Interactive test results with trends and analytics
-  ```bash
-  npm run report:allure
-  ```
-- **HTML Reports**: Detailed test execution reports with screenshots
-  ```bash
-  npm run report:html
-  ```
-- **JUnit Reports**: XML format for CI/CD integration
-
-## 🔄 CI/CD Pipeline
-
-### GitHub Actions Workflow
-
-- **Automated Testing**: Triggered on every PR and push
-- **Multi-browser Testing**: Parallel execution across browsers
-- **Report Generation**: Automatic report publishing
-- **Slack Notifications**: Test result notifications
-
-### Pipeline Features
-
-```yaml
-# Trigger events
-- Push to main/develop branches
-- Pull request creation
-- Scheduled nightly runs
-- Manual workflow dispatch
-
-# Test execution
-- Parallel browser testing
-- Environment-specific testing
-- API and E2E test suites
-- Performance baseline checks
-```
-
-## 🎯 QA Methodologies
-
-### Testing Approaches
-
-- **Risk-Based Testing**: Prioritizing high-risk areas
-- **Behavior-Driven Development (BDD)**: User story-driven test cases
-- **Data-Driven Testing**: Parameterized test execution
-- **Page Object Model**: Maintainable test architecture
-- **API-First Testing**: Backend validation before UI tests
-
-### Quality Metrics
+├── 📁 src/
 
 - **Test Coverage**: Functional and code coverage tracking
 - **Defect Density**: Bug discovery and resolution rates
@@ -439,13 +350,15 @@ npm run test:prod:smoke
 ### Latest Test Run Summary
 
 ```
+
 ✅ Total Tests: 156
 ✅ Passed: 152 (97.4%)
 ❌ Failed: 2 (1.3%)
 ⏭️ Skipped: 2 (1.3%)
 ⏱️ Duration: 12m 34s
 🌐 Browsers: Chrome, Firefox, Safari
-```
+
+````
 
 ### Test Coverage
 
@@ -465,7 +378,7 @@ npm run test:prod:smoke
 - Screenshot and video recording
 - Parallel test execution
 - Custom timeouts and retries
-```
+````
 
 ### Environment Management
 
