@@ -83,7 +83,7 @@ test("Empty Email & Empty Password", async ({ page }) => {
 });
 ```
 
-[🔎 View Full Test Script ](Test-Scripts/)
+[🔎 View Full Test Script ](Test-Scripts/Test-Login.spec.js)
 
 ### Sample Test: `Assistants.spec.js`
 
@@ -117,34 +117,31 @@ test("Should show error when creating assistant with duplicate ID", async ({
 });
 ```
 
-[🔎 View Full Test Script ](Test-Scripts/)
+[🔎 View Full Test Script ](Test-Scripts/Test-Assistant.spec.js)
 
-### Sample Test: `checkout.cy.js`
+### Sample Test: `Settings.spec.js`
 
 ```javascript
-describe("E-Commerce Checkout Tests", () => {
-  beforeEach(() => {
-    cy.visit("https://www.saucedemo.com/");
-    cy.get("#user-name").type("standard_user");
-    cy.get("#password").type("secret_sauce");
-    cy.get("#login-button").click();
-    cy.get("#add-to-cart-sauce-labs-backpack").click();
-    cy.get(".shopping_cart_link").click();
-    cy.get("#checkout").click();
-  });
+test("👤 Validate User Profile Settings", async ({ page }) => {
+  await login(page);
+  await openSettingsDropdown(page);
+  await page.locator('a.dropdown-item[href="/settings"]').click();
 
-  it("should complete checkout", () => {
-    cy.get("#first-name").type("John");
-    cy.get("#last-name").type("Doe");
-    cy.get("#postal-code").type("12345");
-    cy.get("#continue").click();
-    cy.get("#finish").click();
-    cy.get(".complete-header").should("contain", "Thank you for your order");
-  });
+  console.log("🧾 Updating user profile name...");
+  const nameInput = page.locator('input[name="name"]');
+  const updatedName = `updated_${Math.random().toString(36).substring(2, 8)}`;
+  await nameInput.fill(updatedName);
+  await page.getByRole("button", { name: "Update Name" }).click();
+  await expect(nameInput).toHaveValue(updatedName);
+  console.log("✅ Profile name updated successfully.");
+
+  const emailInput = page.locator('input[name="email"]');
+  expect(await emailInput.isDisabled()).toBe(true);
+  console.log("✅ Email input is locked (read-only).");
 });
 ```
 
-[🔎 View Full Test Script ](Test-Scripts/)
+[🔎 View Full Test Script ](Test-Scripts/Test-Settings.spec.js)
 
 ### Playwright Configuration: `playwright.config.js`
 
