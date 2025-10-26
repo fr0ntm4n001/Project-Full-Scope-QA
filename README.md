@@ -8,7 +8,7 @@
 ![Postman](https://img.shields.io/badge/Postman-FF6C37?logo=postman&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)
 
-> Comprehensive QA of the Convoa AI Voice Assistant, combining manual testing, automated test execution, and performance benchmarking. This project covers test planning, case design, detailed bug reporting, and CI/CD pipeline integration — showcasing end-to-end quality assurance practices using modern tools and frameworks that ensure scalability, reliability, and seamless functionality.
+> Comprehensive QA of the C\*\*\*\*a AI Voice Assistant, combining manual testing, automated test execution, and performance benchmarking. This project covers test planning, case design, detailed bug reporting, and CI/CD pipeline integration — showcasing end-to-end quality assurance practices using modern tools and frameworks that ensure scalability, reliability, and seamless functionality.
 
 ## 📋 Table of Contents
 
@@ -25,7 +25,7 @@
 
 ## 🎯 Project Overview
 
-Convoa is an AI-powered voice assistant platform that transforms how businesses manage customer communication by acting as a 24/7 virtual receptionist. It handles inbound and outbound calls, schedules appointments, qualifies leads, and seamlessly integrates with thousands of business tools while providing real-time insights.Its natural, human-like voice that adapts to customer interactions, creating more authentic conversations. Beyond call handling, it manages bookings, orders, and even job planning through features like service heat maps, helping businesses optimize resources based on geographic and team data.
+C\*\*\*\*a is an AI-powered voice assistant platform that transforms how businesses manage customer communication by acting as a 24/7 virtual receptionist. It handles inbound and outbound calls, schedules appointments, qualifies leads, and seamlessly integrates with thousands of business tools while providing real-time insights.Its natural, human-like voice that adapts to customer interactions, creating more authentic conversations. Beyond call handling, it manages bookings, orders, and even job planning through features like service heat maps, helping businesses optimize resources based on geographic and team data.
 
 ### 📚 QA Documentation
 
