@@ -196,6 +196,8 @@ Below is a snapshot from my automated UI test reports generated using Microsoft 
 
 ---
 
+## 4. Bug Reproduction
+
 ### 🎪 Live Demo
 
 - **Test Reports**: [View Latest Test Results](link-to-github-pages)
