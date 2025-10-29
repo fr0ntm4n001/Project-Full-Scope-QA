@@ -206,15 +206,6 @@ This section demonstrates systematic bug identification, reproduction, and docum
 
 ---
 
-### 🎪 Additional Bug Examples
-
-For more bug reports and reproduction steps, visit:
-
-- [Bug Reports Repository](Bug-Reports/)
-- [Known Issues Tracker](https://github.com/issues)
-
----
-
 ## 5. API Testing with Postman
 
 Comprehensive API testing ensures backend reliability, data integrity, and proper integration between services. This section showcases RESTful API validation using Postman collections, automated test scripts, and environment management.
