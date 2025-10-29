@@ -200,6 +200,10 @@ Below is a snapshot from my automated UI test reports generated using Microsoft 
 
 This section demonstrates systematic bug identification, reproduction, and documentation practices.
 
+<img width="780" height="2321" alt="Add a heading (2)" src="https://github.com/user-attachments/assets/46dbb77c-3eec-4196-9299-f181574efd57" />
+
+
+
 ### Bug Report Example: Login Session Timeout
 
 **Bug ID:** BUG-2024-042  
@@ -493,3 +497,4 @@ npm run docs:serve
 ---
 
 _Last Updated: [Current Date] | Test Suite Version: 2.1.0_
+
