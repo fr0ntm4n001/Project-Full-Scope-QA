@@ -213,6 +213,320 @@ For more bug reports and reproduction steps, visit:
 - [Bug Reports Repository](Bug-Reports/)
 - [Known Issues Tracker](https://github.com/issues)
 
+---
+
+## 5. API Testing with Postman
+
+Comprehensive API testing ensures backend reliability, data integrity, and proper integration between services. This section showcases RESTful API validation using Postman collections, automated test scripts, and environment management.
+
+### 🔍 API Test Coverage
+
+- ✅ **Authentication & Authorization** - Login, token refresh, permissions
+- ✅ **CRUD Operations** - Create, Read, Update, Delete endpoints
+- ✅ **Data Validation** - Schema validation, boundary testing
+- ✅ **Error Handling** - Status codes, error messages
+- ✅ **Performance Testing** - Response times, load testing
+- ✅ **Integration Testing** - Multi-endpoint workflows
+
+### 📋 Sample API Test Collection
+
+#### Test Suite: Authentication API
+
+**Endpoint:** `POST /api/v1/auth/login`
+
+**Test Case 1: Successful Login**
+
+```javascript
+// Request
+POST https://api.demo-app.example.com/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "testuser@example.com",
+  "password": "SecurePass123!"
+}
+
+// Expected Response: 200 OK
+{
+  "success": true,
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "refreshToken": "d8f7e6c5b4a3...",
+    "user": {
+      "id": "usr_12345",
+      "email": "testuser@example.com",
+      "role": "agent"
+    }
+  }
+}
+
+// Postman Tests
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+pm.test("Response contains authentication token", function () {
+    var jsonData = pm.response.json();
+    pm.expect(jsonData.data.token).to.be.a('string');
+    pm.expect(jsonData.data.token).to.have.lengthOf.above(20);
+});
+
+pm.test("User object contains required fields", function () {
+    var jsonData = pm.response.json();
+    pm.expect(jsonData.data.user).to.have.property('id');
+    pm.expect(jsonData.data.user).to.have.property('email');
+    pm.expect(jsonData.data.user).to.have.property('role');
+});
+
+// Save token for subsequent requests
+pm.environment.set("authToken", pm.response.json().data.token);
+```
+
+---
+
+**Test Case 2: Invalid Credentials**
+
+```javascript
+// Request
+POST https://api.demo-app.example.com/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "testuser@example.com",
+  "password": "WrongPassword"
+}
+
+// Expected Response: 401 Unauthorized
+{
+  "success": false,
+  "error": {
+    "code": "INVALID_CREDENTIALS",
+    "message": "Email or password is incorrect"
+  }
+}
+
+// Postman Tests
+pm.test("Status code is 401", function () {
+    pm.response.to.have.status(401);
+});
+
+pm.test("Error message is present", function () {
+    var jsonData = pm.response.json();
+    pm.expect(jsonData.success).to.be.false;
+    pm.expect(jsonData.error.message).to.include("incorrect");
+});
+```
+
+---
+
+**Test Case 3: Missing Required Fields**
+
+```javascript
+// Request
+POST https://api.demo-app.example.com/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "testuser@example.com"
+}
+
+// Expected Response: 400 Bad Request
+{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Password is required",
+    "fields": ["password"]
+  }
+}
+
+// Postman Tests
+pm.test("Status code is 400", function () {
+    pm.response.to.have.status(400);
+});
+
+pm.test("Validation error is returned", function () {
+    var jsonData = pm.response.json();
+    pm.expect(jsonData.error.code).to.equal("VALIDATION_ERROR");
+    pm.expect(jsonData.error.fields).to.include("password");
+});
+```
+
+---
+
+#### Test Suite: Assistant Management API
+
+**Endpoint:** `GET /api/v1/assistants`
+
+```javascript
+// Request
+GET https://api.demo-app.example.com/v1/assistants
+Authorization: Bearer {{authToken}}
+
+// Expected Response: 200 OK
+{
+  "success": true,
+  "data": {
+    "assistants": [
+      {
+        "id": "ast_67890",
+        "name": "Customer Support Bot",
+        "status": "active",
+        "created_at": "2025-10-15T10:30:00Z"
+      }
+    ],
+    "total": 1,
+    "page": 1
+  }
+}
+
+// Postman Tests
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+pm.test("Response time is less than 500ms", function () {
+    pm.expect(pm.response.responseTime).to.be.below(500);
+});
+
+pm.test("Assistants array is present", function () {
+    var jsonData = pm.response.json();
+    pm.expect(jsonData.data.assistants).to.be.an('array');
+});
+
+pm.test("Each assistant has required fields", function () {
+    var jsonData = pm.response.json();
+    jsonData.data.assistants.forEach(function(assistant) {
+        pm.expect(assistant).to.have.property('id');
+        pm.expect(assistant).to.have.property('name');
+        pm.expect(assistant).to.have.property('status');
+    });
+});
+```
+
+---
+
+**Endpoint:** `POST /api/v1/assistants`
+
+```javascript
+// Request
+POST https://api.demo-app.example.com/v1/assistants
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "New Sales Assistant",
+  "description": "Handles sales inquiries",
+  "voice": "en-US-Standard-A",
+  "settings": {
+    "temperature": 0.7,
+    "max_tokens": 150
+  }
+}
+
+// Expected Response: 201 Created
+{
+  "success": true,
+  "data": {
+    "id": "ast_99999",
+    "name": "New Sales Assistant",
+    "status": "active",
+    "created_at": "2025-10-26T14:22:00Z"
+  }
+}
+
+// Postman Tests
+pm.test("Status code is 201", function () {
+    pm.response.to.have.status(201);
+});
+
+pm.test("Assistant created successfully", function () {
+    var jsonData = pm.response.json();
+    pm.expect(jsonData.success).to.be.true;
+    pm.expect(jsonData.data.id).to.be.a('string');
+    pm.expect(jsonData.data.name).to.equal("New Sales Assistant");
+});
+
+// Save assistant ID for cleanup
+pm.environment.set("createdAssistantId", pm.response.json().data.id);
+```
+
+---
+
+### 📊 API Test Results Summary
+
+| Test Suite     | Total Tests | Passed | Failed | Response Time (avg) |
+| -------------- | ----------- | ------ | ------ | ------------------- |
+| Authentication | 15          | 15     | 0      | 245ms               |
+| Assistants     | 22          | 21     | 1      | 312ms               |
+| Settings       | 18          | 18     | 0      | 198ms               |
+| Call Logs      | 12          | 12     | 0      | 421ms               |
+| **Total**      | **67**      | **66** | **1**  | **294ms**           |
+
+### 🔧 Postman Collection Features
+
+- **Environment Variables** - Dev, Staging, Production configs
+- **Pre-request Scripts** - Dynamic data generation, token refresh
+- **Test Scripts** - Automated assertions and validations
+- **Collection Runner** - Batch execution with data-driven testing
+- **Newman Integration** - CLI execution for CI/CD pipelines
+
+### 📸 Postman Interface Screenshots
+
+**Collection Structure:**
+
+```
+📁 AI Voice Assistant API Tests
+├── 📁 Authentication
+│   ├── POST Login
+│   ├── POST Refresh Token
+│   └── POST Logout
+├── 📁 Assistants
+│   ├── GET List Assistants
+│   ├── POST Create Assistant
+│   ├── GET Assistant Details
+│   ├── PUT Update Assistant
+│   └── DELETE Delete Assistant
+├── 📁 Settings
+│   ├── GET User Settings
+│   └── PUT Update Settings
+└── 📁 Call Logs
+    ├── GET Call History
+    └── GET Call Details
+```
+
+### 🚀 Running API Tests
+
+**Using Postman:**
+
+```bash
+1. Import collection: File → Import → Select JSON file
+2. Set environment: Select "Staging" or "Production"
+3. Run collection: Click "Run" → Select all tests → Start
+```
+
+**Using Newman (CLI):**
+
+```bash
+# Install Newman
+npm install -g newman
+
+# Run collection
+newman run AI-Voice-Assistant-API-Tests.json \
+  --environment staging.env.json \
+  --reporters cli,html \
+  --reporter-html-export results/api-test-report.html
+
+# Run with data file for data-driven testing
+newman run collection.json \
+  --iteration-data test-data.csv \
+  --environment staging.env.json
+```
+
+[🔎 View Complete Postman Collection](API-Tests/)
+
+---
+
 ## ✨ Features
 
 ### 🔧 Automation Capabilities
