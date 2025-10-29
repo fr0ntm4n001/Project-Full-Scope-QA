@@ -202,63 +202,6 @@ This section demonstrates systematic bug identification, reproduction, and docum
 
 <img width="780" height="2321" alt="Add a heading (2)" src="https://github.com/user-attachments/assets/46dbb77c-3eec-4196-9299-f181574efd57" />
 
-
-
-### Bug Report Example: Login Session Timeout
-
-**Bug ID:** BUG-2024-042  
-**Severity:** High  
-**Status:** Confirmed
-
-#### Bug Summary
-
-User session expires after 5 minutes despite selecting "Remember me for 30 days" during login.
-
-#### Steps to Reproduce
-
-1. Navigate to login page
-2. Enter valid credentials (email and password)
-3. Check the "Remember me for 30 days" checkbox
-4. Click Login button
-5. Wait for 5-6 minutes without activity
-6. Try to refresh or navigate to any page
-
-#### Expected Result
-
-- User should remain logged in for 30 days
-- Session should persist across browser sessions
-
-#### Actual Result
-
-- User session expires after 5 minutes
-- User redirected to login page
-- Error message: "Session expired. Please login again."
-
-#### Technical Details
-
-**Console Error:**
-
-```
-Error: JWT token expired
-Status: 401 Unauthorized
-```
-
-**Environment:**
-
-- Application: v2.3.1 (Staging)
-- Browser: Chrome 118
-- OS: macOS Sonoma 14.1
-
-#### Root Cause
-
-The rememberMe flag is not being passed to the backend token generation, causing default 5-minute expiration.
-
-#### Impact
-
-- High user impact - disrupts workflow
-- Affects all 2,500+ active users
-- No practical workaround available
-
 [🔎 View More Bug Reports](Bug-Reports/)
 
 ---
@@ -497,4 +440,3 @@ npm run docs:serve
 ---
 
 _Last Updated: [Current Date] | Test Suite Version: 2.1.0_
-
