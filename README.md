@@ -454,16 +454,6 @@ pm.environment.set("createdAssistantId", pm.response.json().data.id);
 | Call Logs      | 12          | 12     | 0      | 421ms               |
 | **Total**      | **67**      | **66** | **1**  | **294ms**           |
 
-### 🔧 Postman Collection Features
-
-- **Environment Variables** - Dev, Staging, Production configs
-- **Pre-request Scripts** - Dynamic data generation, token refresh
-- **Test Scripts** - Automated assertions and validations
-- **Collection Runner** - Batch execution with data-driven testing
-- **Newman Integration** - CLI execution for CI/CD pipelines
-
-### 📸 Postman Interface Screenshots
-
 **Collection Structure:**
 
 ```
@@ -485,36 +475,6 @@ pm.environment.set("createdAssistantId", pm.response.json().data.id);
     ├── GET Call History
     └── GET Call Details
 ```
-
-### 🚀 Running API Tests
-
-**Using Postman:**
-
-```bash
-1. Import collection: File → Import → Select JSON file
-2. Set environment: Select "Staging" or "Production"
-3. Run collection: Click "Run" → Select all tests → Start
-```
-
-**Using Newman (CLI):**
-
-```bash
-# Install Newman
-npm install -g newman
-
-# Run collection
-newman run AI-Voice-Assistant-API-Tests.json \
-  --environment staging.env.json \
-  --reporters cli,html \
-  --reporter-html-export results/api-test-report.html
-
-# Run with data file for data-driven testing
-newman run collection.json \
-  --iteration-data test-data.csv \
-  --environment staging.env.json
-```
-
-[🔎 View Complete Postman Collection](API-Tests/)
 
 ---
 
@@ -923,33 +883,6 @@ jobs:
 
 ---
 
-## ✨ Features
-
-### 🔧 Automation Capabilities
-
-- ✅ **End-to-End Testing** with Playwright
-- ✅ **Cross-browser Testing** (Chrome, Firefox, Safari, Edge)
-- ✅ **Mobile Responsive Testing**
-- ✅ **API Testing** with built-in HTTP client
-- ✅ **Visual Regression Testing**
-- ✅ **Database Testing** and validation
-- ✅ **Performance Testing** basics
-
-### 📊 Reporting & Analytics
-
-- ✅ **Allure Reports** with detailed test analytics
-- ✅ **HTML Reports** with screenshots and videos
-- ✅ **Test Coverage Metrics**
-- ✅ **Performance Metrics** tracking
-- ✅ **Custom Dashboards**
-
-### 🔄 Process Integration
-
-- ✅ **GitHub Actions CI/CD**
-- ✅ **Automated Test Execution** on PR/Push
-- ✅ **Slack/Email Notifications**
-- ✅ **Test Environment Management**
-
 ## 🛠 Technology Stack
 
 | Category            | Tools & Technologies                              |
@@ -1043,14 +976,6 @@ sqa-portfolio/
 - **Staging**: Pre-production validation
 - **Production**: Smoke test monitoring
 
-## 🐛 Sample Bug Reports
-
-| Bug ID  | Severity | Status | Description                         | Found In       |
-| ------- | -------- | ------ | ----------------------------------- | -------------- |
-| BUG-001 | High     | Fixed  | Login fails with special characters | E2E Testing    |
-| BUG-002 | Medium   | Open   | Slow API response on user creation  | API Testing    |
-| BUG-003 | Low      | Fixed  | UI alignment issue on mobile        | Visual Testing |
-
 ## 🏆 QA Achievements
 
 - 🎯 **97%+ Test Pass Rate** maintained
@@ -1075,38 +1000,6 @@ sqa-portfolio/
 - **Jira**: Bug tracking integration
 - **Slack**: Team communication and notifications
 
-## 📈 Getting Started as a QA Engineer
-
-### For Manual Testers
-
-1. Review [QA Process Documentation](docs/QA_Process.md)
-2. Explore manual test cases in `test-cases/manual/`
-3. Understand the bug life cycle process
-
-### For Automation Engineers
-
-1. Set up the development environment
-2. Review Page Object Model implementation
-3. Run sample test suites
-4. Explore CI/CD integration
-
-### For QA Managers
-
-1. Review test strategy and planning documents
-2. Analyze test metrics and reports
-3. Understand automation ROI and coverage
-
-## 🤝 Contributing
-
-Interested in improving this QA framework? Here's how you can contribute:
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Follow** the coding standards and add appropriate tests
-4. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-5. **Push** to the branch (`git push origin feature/amazing-feature`)
-6. **Open** a Pull Request
-
 ### Coding Standards
 
 - Follow Page Object Model patterns
@@ -1123,29 +1016,6 @@ Interested in improving this QA framework? Here's how you can contribute:
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Playwright Team** for the excellent automation framework
-- **Allure Framework** for beautiful test reporting
-- **QA Community** for continuous learning and best practices
-
----
-
-### 🎯 Quick Demo Commands
-
-```bash
-# Quick start - run demo tests
-npm run demo
-
-# Generate sample test report
-npm run generate:sample-report
-
-# View test documentation
-npm run docs:serve
-```
-
-**Ready to explore quality assurance excellence?** Start with `npm run demo` and dive into the world of comprehensive QA automation! 🚀
 
 ---
 
