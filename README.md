@@ -84,7 +84,7 @@ AI-Voice-Assistant-App-Full-Scope-QA/
 
 ## 3. Test Strategy / QA Documentation
 
-_🚧 (Under Construction , work in progress)_
+_🚧 (Under Construction , work in progress in this section only)_
 
 | Document                                 | Description                                   |
 | ---------------------------------------- | --------------------------------------------- |
@@ -1164,4 +1164,4 @@ Proprietary License. See [LICENSE](License) for details.
 
 ---
 
-_Last Updated: [Current Date] | Test Suite Version: 2.1.0_
+_Last Updated: 18 Nov 2025 | Test Suite Version: 2.0.0_
