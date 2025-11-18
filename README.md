@@ -491,18 +491,6 @@ Performance testing ensures the application can handle expected load, identifies
 - ✅ **E2E Scenario Testing** - Complete user journey performance validation
 - ✅ **Response Time Analysis** - Monitor latency across all endpoints
 
-### 📊 Performance Metrics Achieved
-
-| Metric                  | Target   | Measured | Status  |
-| ----------------------- | -------- | -------- | ------- |
-| **Response Time (p95)** | < 500ms  | 432ms    | ✅ Pass |
-| **Response Time (p99)** | < 1000ms | 876ms    | ✅ Pass |
-| **Success Rate**        | > 95%    | 97.7%    | ✅ Pass |
-| **Error Rate**          | < 5%     | 2.3%     | ✅ Pass |
-| **VU Failure Rate**     | < 10%    | 6.7%     | ✅ Pass |
-| **Apdex Score**         | > 0.70   | 0.81     | ✅ Pass |
-| **Avg Response Time**   | < 500ms  | 422ms    | ✅ Pass |
-
 ### 🧪 Test Suite Overview
 
 | Test File               | Purpose                       | Duration | Virtual Users    | Scenarios             |
@@ -513,7 +501,9 @@ Performance testing ensures the application can handle expected load, identifies
 | `endurance-test.yml`    | Long-duration stability       | 60 min   | 20/sec sustained | 3 endurance flows     |
 | `all-e2e-scenarios.yml` | Comprehensive E2E testing     | ~24 min  | Up to 20/sec     | 8 complete journeys   |
 
-### 🔧 Artillery Configuration Files
+[🔎 View Complete Test Suite Configurations](Load-Test/)
+
+### Load Testing Examples
 
 **1. Basic Load Test: `load-test.yml`**
 
@@ -572,18 +562,6 @@ scenarios:
             - json: "$.access_token"
               as: "authToken"
               ifUndefined: "skip"
-
-      - think: 1
-
-      - get:
-          url: "/api/v1/assistants"
-          headers:
-            Authorization: "Bearer {{ authToken }}"
-          expect:
-            - statusCode: [200, 401, 500]
-          ifTrue: "authToken"
-
-      - think: 2
 ```
 
 [🔎 View Complete Load Test Configuration](Load-Test/load-test.yml)
@@ -717,206 +695,7 @@ scenarios:
 
 ---
 
-**4. Endurance Test: `endurance-test.yml`**
-
-Long-duration testing (1 hour) to identify memory leaks, resource exhaustion, and stability issues.
-
-```yaml
-config:
-  target: "https://api.demo-app.example.com"
-  phases:
-    # Long-duration sustained load test
-    - duration: 3600 # 1 hour
-      arrivalRate: 20
-      name: "Sustained load - 1 hour"
-
-  http:
-    timeout: 60
-    pool: 100
-    keepAlive: true
-
-scenarios:
-  # Endurance test for authentication and dashboard (50%)
-  - name: "Endurance Test - Auth and Dashboard"
-    weight: 50
-    flow:
-      - post:
-          url: "/api/v1/auth/sign-in"
-          headers:
-            Content-Type: "application/x-www-form-urlencoded"
-          form:
-            username: "{{ testUser }}"
-            password: "{{ testPassword }}"
-            grant_type: "password"
-            client_id: "web"
-          expect:
-            - statusCode: [200, 500]
-          capture:
-            - json: "$.access_token"
-              as: "authToken"
-              ifUndefined: "skip"
-
-      - think: 3
-
-      - get:
-          url: "/dashboard"
-          headers:
-            Authorization: "Bearer {{ authToken }}"
-          expect:
-            - statusCode: [200, 401, 500]
-          ifTrue: "authToken"
-
-      - think: 5
-```
-
-[🔎 View Complete Endurance Test Configuration](Load-Test/endurance-test.yml)
-
----
-
-**5. Comprehensive E2E Scenarios: `all-e2e-scenarios.yml`**
-
-Full user journey testing covering all major application features with realistic usage patterns.
-
-```yaml
-config:
-  target: "https://api.demo-app.example.com"
-  phases:
-    # Warm-up phase
-    - duration: 120
-      arrivalRate: 3
-      name: "Warm-up - All E2E Scenarios"
-    # Gradual ramp-up
-    - duration: 180
-      arrivalRate: 8
-      name: "Ramp-up"
-    # Steady load phase
-    - duration: 600
-      arrivalRate: 12
-      name: "Steady Load - All E2E Test Cases"
-    # Peak load phase
-    - duration: 300
-      arrivalRate: 20
-      name: "Peak Load"
-    # Cool-down phase
-    - duration: 120
-      arrivalRate: 3
-      name: "Cool-down"
-
-  http:
-    timeout: 90
-    pool: 100
-    keepAlive: true
-
-  variables:
-    primaryTestUsers:
-      - "testuser@example.com"
-    testPasswords:
-      - "SecurePass123!"
-
-scenarios:
-  # Login and Navigation Flow (28% of traffic)
-  - name: "Login and Navigation Flow"
-    weight: 28
-    flow:
-      - get:
-          url: "/login"
-          expect:
-            - statusCode: 200
-          capture:
-            - header: "set-cookie"
-              as: "sessionCookie"
-
-      - think: 2
-
-      - post:
-          url: "/api/v1/auth/sign-in"
-          headers:
-            Cookie: "{{ sessionCookie }}"
-          form:
-            username: "{{ primaryTestUsers }}"
-            password: "{{ testPasswords }}"
-          expect:
-            - statusCode: [200, 400, 401]
-          capture:
-            - json: "$.access_token"
-              as: "authToken"
-            - json: "$.user.id"
-              as: "userId"
-              ifUndefined: "skip"
-
-      - think: 1
-
-      # Dashboard navigation
-      - get:
-          url: "/dashboard"
-          headers:
-            Authorization: "Bearer {{ authToken }}"
-            Cookie: "{{ sessionCookie }}"
-          expect:
-            - statusCode: [200, 500]
-
-      - think: 2
-
-      # User profile and settings
-      - get:
-          url: "/api/v1/user/me"
-          headers:
-            Authorization: "Bearer {{ authToken }}"
-          expect:
-            - statusCode: [200, 401, 404]
-```
-
-[🔎 View Complete E2E Scenarios Configuration](Load-Test/all-e2e-scenarios.yml)
-
----
-
-### 📊 Actual Test Results
-
-**Load Test Execution Summary:**
-
-```
---------------------------------
-Summary report @ 19:45:23(+0000)
---------------------------------
-
-Scenarios launched:  86
-Scenarios completed: 84
-Requests completed:  86
-
-Response time (msec):
-  min: 124
-  max: 1,847
-  median: 398
-  p95: 432
-  p99: 876
-
-Scenario counts:
-  User Login and Dashboard Access: 34 (40%)
-  Assistant Management Operations: 26 (30%)
-  Call Logs Retrieval: 17 (20%)
-  Settings Update: 9 (10%)
-
-HTTP Status Codes:
-  200: 83 (96.5%)
-  401: 1 (1.2%)
-  500: 2 (2.3%)
-
-Apdex Score: 0.81 (Fair)
-Average Response Time: 422ms
-VU Failures: 2/30 (6.7%)
-Success Rate: 97.7% ✅
-```
-
-### 🎯 Performance Testing Best Practices Applied
-
-- ✅ **Gradual Ramp-up** - Start with warm-up phase before peak load
-- ✅ **Realistic Think Times** - Add 1-5 second delays between requests
-- ✅ **Error Tolerance** - Accept multiple status codes for server stability
-- ✅ **Connection Pooling** - Reuse HTTP connections with keepAlive
-- ✅ **Scenario Weighting** - Distribute load based on actual usage patterns
-- ✅ **Comprehensive Metrics** - Track Apdex, p95/p99, success rates
-
-### 📝 Global Configuration: `artillery.config.yml`
+### 📝 Artillery Global Configuration: `artillery.config.yml`
 
 ```yaml
 # Artillery Global Configuration File
@@ -975,6 +754,68 @@ config:
 ```
 
 [🔎 View Complete Artillery Configuration](Load-Test/artillery.config.yml)
+
+---
+
+### 📊 Performance Metrics Achieved
+
+| Metric                  | Target   | Measured | Status  |
+| ----------------------- | -------- | -------- | ------- |
+| **Response Time (p95)** | < 500ms  | 432ms    | ✅ Pass |
+| **Response Time (p99)** | < 1000ms | 876ms    | ✅ Pass |
+| **Success Rate**        | > 95%    | 97.7%    | ✅ Pass |
+| **Error Rate**          | < 5%     | 2.3%     | ✅ Pass |
+| **VU Failure Rate**     | < 10%    | 6.7%     | ✅ Pass |
+| **Apdex Score**         | > 0.70   | 0.81     | ✅ Pass |
+| **Avg Response Time**   | < 500ms  | 422ms    | ✅ Pass |
+
+---
+
+### 📊 Actual Test Results
+
+**Load Test Execution Summary:**
+
+```
+--------------------------------
+Summary report @ 19:45:23(+0000)
+--------------------------------
+
+Scenarios launched:  86
+Scenarios completed: 84
+Requests completed:  86
+
+Response time (msec):
+  min: 124
+  max: 1,847
+  median: 398
+  p95: 432
+  p99: 876
+
+Scenario counts:
+  User Login and Dashboard Access: 34 (40%)
+  Assistant Management Operations: 26 (30%)
+  Call Logs Retrieval: 17 (20%)
+  Settings Update: 9 (10%)
+
+HTTP Status Codes:
+  200: 83 (96.5%)
+  401: 1 (1.2%)
+  500: 2 (2.3%)
+
+Apdex Score: 0.81 (Fair)
+Average Response Time: 422ms
+VU Failures: 2/30 (6.7%)
+Success Rate: 97.7% ✅
+```
+
+### 🎯 Performance Testing Best Practices Applied
+
+- ✅ **Gradual Ramp-up** - Start with warm-up phase before peak load
+- ✅ **Realistic Think Times** - Add 1-5 second delays between requests
+- ✅ **Error Tolerance** - Accept multiple status codes for server stability
+- ✅ **Connection Pooling** - Reuse HTTP connections with keepAlive
+- ✅ **Scenario Weighting** - Distribute load based on actual usage patterns
+- ✅ **Comprehensive Metrics** - Track Apdex, p95/p99, success rates
 
 ---
 
