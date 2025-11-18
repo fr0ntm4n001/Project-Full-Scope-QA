@@ -29,6 +29,47 @@ Comprehensive QA of the C\*\*\*\*a AI Voice Assistant, combining manual testing,
 
 ## 2. Project Structure
 
+```
+sqa-portfolio/
+├── 📄 README.md                    # Project documentation
+├── 📁 docs/                        # QA Documentation
+│   ├── Test_Strategy.md            # Overall testing approach
+│   ├── Test_Plan.md               # Detailed test planning
+│   ├── Bug_Life_Cycle.md          # Bug tracking process
+│   ├── QA_Process.md              # QA workflows
+│   └── Tools_Used.md              # Technology documentation
+├── 📁 test-cases/                  # Test case repository
+│   ├── manual/                    # Manual test cases
+│   │   ├── login_test_cases.csv   # CSV format test cases
+│   │   └── regression_suite.xlsx  # Excel test suites
+│   └── automated/                 # Automated test specs
+│       ├── login_test_cases.json  # JSON test data
+│       └── api_test_data.json     # API test datasets
+├── 📁 tests/                       # Test implementation
+│   ├── unit/                      # Unit test examples
+│   ├── integration/               # Integration tests
+│   ├── api/                       # API test suites
+│   │   ├── auth.spec.js           # Authentication API tests
+│   │   └── users.spec.js          # User management tests
+│   └── e2e/                       # End-to-end tests
+│       ├── login.spec.js          # Login flow tests
+│       ├── checkout.spec.js       # E-commerce workflows
+│       └── admin.spec.js          # Admin panel tests
+├── 📁 reports/                     # Test reports
+│   ├── allure-results/            # Allure test results
+│   ├── html/                      # HTML reports
+│   ├── screenshots/               # Test screenshots
+│   └── videos/                    # Test execution videos
+├── 📁 src/
+
+```
+
+### Environment Management
+
+- **Development**: Local testing environment
+- **Staging**: Pre-production validation
+- **Production**: Smoke test monitoring
+
 ## 3. Test Strategy / QA Documentation
 
 | Document                                 | Description                                   |
@@ -824,47 +865,6 @@ Success Rate: 97.7% ✅
 ## 10. CI/CD Integration
 
 ## 📁 Project Structure
-
-```
-sqa-portfolio/
-├── 📄 README.md                    # Project documentation
-├── 📁 docs/                        # QA Documentation
-│   ├── Test_Strategy.md            # Overall testing approach
-│   ├── Test_Plan.md               # Detailed test planning
-│   ├── Bug_Life_Cycle.md          # Bug tracking process
-│   ├── QA_Process.md              # QA workflows
-│   └── Tools_Used.md              # Technology documentation
-├── 📁 test-cases/                  # Test case repository
-│   ├── manual/                    # Manual test cases
-│   │   ├── login_test_cases.csv   # CSV format test cases
-│   │   └── regression_suite.xlsx  # Excel test suites
-│   └── automated/                 # Automated test specs
-│       ├── login_test_cases.json  # JSON test data
-│       └── api_test_data.json     # API test datasets
-├── 📁 tests/                       # Test implementation
-│   ├── unit/                      # Unit test examples
-│   ├── integration/               # Integration tests
-│   ├── api/                       # API test suites
-│   │   ├── auth.spec.js           # Authentication API tests
-│   │   └── users.spec.js          # User management tests
-│   └── e2e/                       # End-to-end tests
-│       ├── login.spec.js          # Login flow tests
-│       ├── checkout.spec.js       # E-commerce workflows
-│       └── admin.spec.js          # Admin panel tests
-├── 📁 reports/                     # Test reports
-│   ├── allure-results/            # Allure test results
-│   ├── html/                      # HTML reports
-│   ├── screenshots/               # Test screenshots
-│   └── videos/                    # Test execution videos
-├── 📁 src/
-
-```
-
-### Environment Management
-
-- **Development**: Local testing environment
-- **Staging**: Pre-production validation
-- **Production**: Smoke test monitoring
 
 ## 11. 🏆 QA Achievements
 
