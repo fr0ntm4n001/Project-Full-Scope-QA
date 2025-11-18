@@ -1,0 +1,117 @@
+config:
+  target: "https://api.demo-app.example.com"
+  phases:
+    # Long-duration sustained load test
+    - duration: 3600 # 1 hour
+      arrivalRate: 20
+      name: "Sustained load - 1 hour"
+
+  http:
+    timeout: 60
+    pool: 100
+    keepAlive: true
+
+  plugins:
+    expect: {}
+    metrics-by-endpoint: {}
+    apdex:
+      threshold: 500
+
+  variables:
+    testUser: "testuser@example.com"
+    testPassword: "SecurePass123!"
+
+scenarios:
+  # Endurance test for authentication and dashboard
+  - name: "Endurance Test - Auth and Dashboard"
+    weight: 50
+    flow:
+      - post:
+          url: "/api/v1/auth/sign-in"
+          headers:
+            Content-Type: "application/x-www-form-urlencoded"
+          form:
+            username: "{{ testUser }}"
+            password: "{{ testPassword }}"
+            grant_type: "password"
+            client_id: "web"
+          expect:
+            - statusCode: [200, 500]
+          capture:
+            - json: "$.access_token"
+              as: "authToken"
+              ifUndefined: "skip"
+
+      - think: 3
+
+      - get:
+          url: "/dashboard"
+          headers:
+            Authorization: "Bearer {{ authToken }}"
+          expect:
+            - statusCode: [200, 401, 500]
+          ifTrue: "authToken"
+
+      - think: 5
+
+  # Endurance test for API endpoints
+  - name: "Endurance Test - API Endpoints"
+    weight: 30
+    flow:
+      - post:
+          url: "/api/v1/auth/sign-in"
+          headers:
+            Content-Type: "application/x-www-form-urlencoded"
+          form:
+            username: "{{ testUser }}"
+            password: "{{ testPassword }}"
+            grant_type: "password"
+            client_id: "web"
+          expect:
+            - statusCode: [200, 500]
+          capture:
+            - json: "$.access_token"
+              as: "authToken"
+              ifUndefined: "skip"
+
+      - think: 2
+
+      - get:
+          url: "/api/v1/assistants"
+          headers:
+            Authorization: "Bearer {{ authToken }}"
+          expect:
+            - statusCode: [200, 401, 500]
+          ifTrue: "authToken"
+
+      - think: 4
+
+  # Endurance test for call logs
+  - name: "Endurance Test - Call Logs"
+    weight: 20
+    flow:
+      - post:
+          url: "/api/v1/auth/sign-in"
+          headers:
+            Content-Type: "application/x-www-form-urlencoded"
+          form:
+            username: "{{ testUser }}"
+            password: "{{ testPassword }}"
+            grant_type: "password"
+            client_id: "web"
+          expect:
+            - statusCode: [200, 500]
+          capture:
+            - json: "$.access_token"
+              as: "authToken"
+              ifUndefined: "skip"
+
+      - get:
+          url: "/api/v1/calls?page=1&limit=50"
+          headers:
+            Authorization: "Bearer {{ authToken }}"
+          expect:
+            - statusCode: [200, 401, 404, 500]
+          ifTrue: "authToken"
+
+      - think: 5

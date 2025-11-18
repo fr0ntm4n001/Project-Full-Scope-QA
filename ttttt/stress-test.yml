@@ -1,0 +1,105 @@
+config:
+  target: "https://api.demo-app.example.com"
+  phases:
+    # Baseline
+    - duration: 60
+      arrivalRate: 10
+      name: "Baseline"
+    # Increase load
+    - duration: 120
+      arrivalRate: 30
+      name: "Increase load"
+    # High load
+    - duration: 180
+      arrivalRate: 60
+      name: "High load"
+    # Stress level
+    - duration: 120
+      arrivalRate: 100
+      name: "Stress level"
+    # Breaking point test
+    - duration: 60
+      arrivalRate: 150
+      name: "Breaking point test"
+
+  http:
+    timeout: 90
+    pool: 200
+    keepAlive: true
+
+  plugins:
+    expect: {}
+    metrics-by-endpoint: {}
+    apdex:
+      threshold: 1000
+
+  variables:
+    testUser: "testuser@example.com"
+    testPassword: "SecurePass123!"
+
+scenarios:
+  # High Load Authentication
+  - name: "High Load Authentication"
+    weight: 60
+    flow:
+      - post:
+          url: "/api/v1/auth/sign-in"
+          headers:
+            Content-Type: "application/x-www-form-urlencoded"
+          form:
+            username: "{{ testUser }}"
+            password: "{{ testPassword }}"
+            grant_type: "password"
+            client_id: "web"
+          expect:
+            - statusCode: [200, 400, 401, 429, 500, 503]
+          capture:
+            - json: "$.access_token"
+              as: "authToken"
+              ifUndefined: "skip"
+
+      - think: 1
+
+      - get:
+          url: "/dashboard"
+          headers:
+            Authorization: "Bearer {{ authToken }}"
+          expect:
+            - statusCode: [200, 401, 429, 500, 503]
+          ifTrue: "authToken"
+
+  # Concurrent API Requests
+  - name: "Concurrent API Requests"
+    weight: 40
+    flow:
+      - post:
+          url: "/api/v1/auth/sign-in"
+          headers:
+            Content-Type: "application/x-www-form-urlencoded"
+          form:
+            username: "{{ testUser }}"
+            password: "{{ testPassword }}"
+            grant_type: "password"
+            client_id: "web"
+          expect:
+            - statusCode: [200, 400, 401, 429, 500, 503]
+          capture:
+            - json: "$.access_token"
+              as: "authToken"
+              ifUndefined: "skip"
+
+      - get:
+          url: "/api/v1/assistants"
+          headers:
+            Authorization: "Bearer {{ authToken }}"
+          expect:
+            - statusCode: [200, 401, 429, 500, 503]
+          ifTrue: "authToken"
+
+      - get:
+          url: "/api/v1/dashboard/call-count-by-category"
+          headers:
+            Authorization: "Bearer {{ authToken }}"
+          expect:
+            - statusCode: [200, 401, 404, 429, 500, 503]
+          ifTrue: "authToken"

@@ -1,0 +1,66 @@
+# Artillery Global Configuration File
+# This file provides shared configuration for all Artillery test scenarios
+
+config:
+  # Environment-specific targets
+  environments:
+    development:
+      target: "http://localhost:3000"
+      phases:
+        - duration: 30
+          arrivalRate: 2
+          name: "Development Test"
+
+    staging:
+      target: "https://staging.convoa.app"
+      phases:
+        - duration: 60
+          arrivalRate: 5
+          name: "Staging Warm-up"
+        - duration: 120
+          arrivalRate: 10
+          name: "Staging Load"
+
+    production:
+      target: "https://api.demo-app.example.com"
+      phases:
+        - duration: 60
+          arrivalRate: 10
+          name: "Production Warm-up"
+        - duration: 180
+          arrivalRate: 25
+          name: "Production Load"
+        - duration: 60
+          arrivalRate: 5
+          name: "Production Cool-down"
+
+  # Default HTTP settings
+  http:
+    timeout: 60
+    pool: 100
+    keepAlive: true
+    maxSockets: 100
+
+  # Default plugins
+  plugins:
+    expect: {}
+    metrics-by-endpoint:
+      stripQueryString: true
+    apdex:
+      threshold: 500
+
+  # Test user credentials
+  variables:
+    testUser: "testuser@example.com"
+    testPassword: "SecurePass123!"
+
+  # Performance thresholds
+  ensure:
+    maxErrorRate: 5 # Max 5% error rate
+    p95: 1000 # 95th percentile under 1s
+    p99: 2000 # 99th percentile under 2s
+    minRate: 10 # Minimum requests per second
+
+
+  # Processor file for custom functions (optional)
+  # processor: "./test-helpers.js"
