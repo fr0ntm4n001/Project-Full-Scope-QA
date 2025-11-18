@@ -34,8 +34,8 @@ config:
       threshold: 1000
 
   variables:
-    testUser: "testerdrew7@yopmail.com"
-    testPassword: "Test12345@"
+    testUser: "testuser@example.com"
+    testPassword: "SecurePass123!"
 
 scenarios:
   # High Load Authentication

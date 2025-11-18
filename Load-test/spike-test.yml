@@ -31,8 +31,8 @@ scenarios:
           headers:
             Content-Type: "application/x-www-form-urlencoded"
           form:
-            username: "testerdrew7@yopmail.com"
-            password: "Test12345@"
+            username: "testuser@example.com"
+            password: "SecurePass123!"
             grant_type: "password"
             client_id: "web"
           expect:
@@ -80,8 +80,8 @@ scenarios:
           headers:
             Content-Type: "application/x-www-form-urlencoded"
           form:
-            username: "testerdrew7@yopmail.com"
-            password: "Test12345@"
+            username: "testuser@example.com"
+            password: "SecurePass123!"
             grant_type: "password"
             client_id: "web"
           expect:

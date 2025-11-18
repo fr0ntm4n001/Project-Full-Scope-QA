@@ -197,9 +197,9 @@ artillery run -e production load-test.yml
 You can override settings using environment variables:
 
 ```bash
-export ARTILLERY_TARGET="https://staging.convoa.app"
-export TEST_USER="testerdrew7@yopmail.com"
-export TEST_PASSWORD="Test12345@"
+export ARTILLERY_TARGET="https://staging.demo-app.example.com"
+export TEST_USER="testuser@example.com"
+export TEST_PASSWORD="SecurePass123!"
 ```
 
 ## 📈 Performance Benchmarks

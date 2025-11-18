@@ -18,8 +18,8 @@ config:
       threshold: 500
 
   variables:
-    testUser: "testerdrew7@yopmail.com"
-    testPassword: "Test12345@"
+    testUser: "testuser@example.com"
+    testPassword: "SecurePass123!"
 
 scenarios:
   # Endurance test for authentication and dashboard

@@ -546,46 +546,13 @@ config:
     keepAlive: true
 
   plugins:
-    expect: {}
-    metrics-by-endpoint: {}
-    apdex:
-      threshold: 500
+    threshold: 500
 
   variables:
-    testUser: "testerdrew7@yopmail.com"
-    testPassword: "Test12345@"
+    testUser: "testuser@example.com"
+    testPassword: "SecurePass123!"
 
 scenarios:
-  # User Login and Dashboard Access (40% of traffic)
-  - name: "User Login and Dashboard Access"
-    weight: 40
-    flow:
-      - post:
-          url: "/api/v1/auth/sign-in"
-          headers:
-            Content-Type: "application/x-www-form-urlencoded"
-          form:
-            username: "{{ testUser }}"
-            password: "{{ testPassword }}"
-            grant_type: "password"
-            client_id: "web"
-          expect:
-            - statusCode: [200, 500]
-          capture:
-            - json: "$.access_token"
-              as: "authToken"
-              ifUndefined: "skip"
-
-      - think: 2
-
-      - get:
-          url: "/dashboard"
-          headers:
-            Authorization: "Bearer {{ authToken }}"
-          expect:
-            - statusCode: [200, 401, 500]
-          ifTrue: "authToken"
-
   # Assistant Management Operations (30% of traffic)
   - name: "Assistant Management Operations"
     weight: 30
@@ -617,37 +584,9 @@ scenarios:
           ifTrue: "authToken"
 
       - think: 2
-
-  # Call Logs Retrieval (20% of traffic)
-  - name: "Call Logs Retrieval"
-    weight: 20
-    flow:
-      - post:
-          url: "/api/v1/auth/sign-in"
-          headers:
-            Content-Type: "application/x-www-form-urlencoded"
-          form:
-            username: "{{ testUser }}"
-            password: "{{ testPassword }}"
-            grant_type: "password"
-            client_id: "web"
-          expect:
-            - statusCode: [200, 500]
-          capture:
-            - json: "$.access_token"
-              as: "authToken"
-              ifUndefined: "skip"
-
-      - get:
-          url: "/api/v1/calls?page=1&limit=50"
-          headers:
-            Authorization: "Bearer {{ authToken }}"
-          expect:
-            - statusCode: [200, 401, 404, 500]
-          ifTrue: "authToken"
 ```
 
-[🔎 View Complete Load Test Configuration](Load-test/load-test.yml)
+[🔎 View Complete Load Test Configuration](Load-Test/load-test.yml)
 
 ---
 
@@ -681,10 +620,7 @@ config:
     keepAlive: true
 
   plugins:
-    expect: {}
-    metrics-by-endpoint: {}
-    apdex:
-      threshold: 1000
+    threshold: 1000
 
 scenarios:
   # High Load Authentication (60% of traffic)
@@ -718,7 +654,7 @@ scenarios:
           ifTrue: "authToken"
 ```
 
-[🔎 View Complete Stress Test Configuration](Load-test/stress-test.yml)
+[🔎 View Complete Stress Test Configuration](Load-Test/stress-test.yml)
 
 ---
 
@@ -745,11 +681,6 @@ config:
     timeout: 60
     pool: 100
 
-  plugins:
-    expect: {}
-    metrics-by-endpoint: {}
-    apdex: {}
-
 scenarios:
   # Login Stress Test (50% of traffic)
   - name: "Login Stress Test"
@@ -760,8 +691,8 @@ scenarios:
           headers:
             Content-Type: "application/x-www-form-urlencoded"
           form:
-            username: "testerdrew7@yopmail.com"
-            password: "Test12345@"
+            username: "testuser@example.com"
+            password: "SecurePass123!"
             grant_type: "password"
             client_id: "web"
           expect:
@@ -782,7 +713,7 @@ scenarios:
           ifTrue: "authToken"
 ```
 
-[🔎 View Complete Spike Test Configuration](Load-test/spike-test.yml)
+[🔎 View Complete Spike Test Configuration](Load-Test/spike-test.yml)
 
 ---
 
@@ -803,12 +734,6 @@ config:
     timeout: 60
     pool: 100
     keepAlive: true
-
-  plugins:
-    expect: {}
-    metrics-by-endpoint: {}
-    apdex:
-      threshold: 500
 
 scenarios:
   # Endurance test for authentication and dashboard (50%)
@@ -844,7 +769,7 @@ scenarios:
       - think: 5
 ```
 
-[🔎 View Complete Endurance Test Configuration](Load-test/endurance-test.yml)
+[🔎 View Complete Endurance Test Configuration](Load-Test/endurance-test.yml)
 
 ---
 
@@ -882,15 +807,11 @@ config:
     pool: 100
     keepAlive: true
 
-  plugins:
-    expect: {}
-    metrics-by-endpoint: {}
-
   variables:
     primaryTestUsers:
-      - "testerdrew7@yopmail.com"
+      - "testuser@example.com"
     testPasswords:
-      - "Test12345@"
+      - "SecurePass123!"
 
 scenarios:
   # Login and Navigation Flow (28% of traffic)
@@ -945,7 +866,7 @@ scenarios:
             - statusCode: [200, 401, 404]
 ```
 
-[🔎 View Complete E2E Scenarios Configuration](Load-test/all-e2e-scenarios.yml)
+[🔎 View Complete E2E Scenarios Configuration](Load-Test/all-e2e-scenarios.yml)
 
 ---
 
@@ -1041,18 +962,10 @@ config:
     keepAlive: true
     maxSockets: 100
 
-  # Default plugins
-  plugins:
-    expect: {}
-    metrics-by-endpoint:
-      stripQueryString: true
-    apdex:
-      threshold: 500
-
   # Test user credentials
   variables:
-    testUser: "testerdrew7@yopmail.com"
-    testPassword: "Test12345@"
+    testUser: "testuser@example.com"
+    testPassword: "SecurePass123!"
 
   # Performance thresholds
   ensure:
@@ -1061,21 +974,9 @@ config:
     p99: 2000 # 99th percentile under 2s
 ```
 
-[🔎 View Complete Artillery Configuration](Load-test/artillery.config.yml)
+[🔎 View Complete Artillery Configuration](Load-Test/artillery.config.yml)
 
 ---
-
-## 🛠 Technology Stack
-
-| Category            | Tools & Technologies                              |
-| ------------------- | ------------------------------------------------- |
-| **Test Automation** | Playwright, Node.js, TypeScript/JavaScript        |
-| **API Testing**     | Playwright API, Postman Collections               |
-| **Reporting**       | Allure Framework, HTML Reports, Custom Dashboards |
-| **CI/CD**           | GitHub Actions, Docker                            |
-| **Documentation**   | Markdown, Confluence Integration                  |
-| **Test Management** | Custom JSON/CSV formats, Excel Integration        |
-| **Performance**     | Lighthouse, WebPageTest Integration               |
 
 ## 📁 Project Structure
 
@@ -1112,7 +1013,6 @@ sqa-portfolio/
 │   └── videos/                    # Test execution videos
 ├── 📁 src/
 
-
 ```
 
 ### Environment Management
@@ -1128,22 +1028,6 @@ sqa-portfolio/
 - 🔍 **Early Bug Detection** - 85% of bugs found in testing phase
 - ⚡ **Fast Feedback** - Test results in under 15 minutes
 - 📈 **Continuous Improvement** - Weekly test suite optimization
-
-## 🛠 Tools & Integrations
-
-### Core Testing Tools
-
-- **Playwright**: Primary automation framework
-- **Allure**: Advanced reporting and analytics
-- **Jest**: Unit testing framework
-- **Postman**: API testing and documentation
-
-### Supporting Tools
-
-- **Docker**: Containerized test environments
-- **Jenkins**: Alternative CI/CD option
-- **Jira**: Bug tracking integration
-- **Slack**: Team communication and notifications
 
 ### Coding Standards
 

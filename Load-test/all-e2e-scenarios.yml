@@ -34,13 +34,13 @@ config:
   # Test data covering all scenarios
   variables:
     primaryTestUsers:
-      - "testerdrew7@yopmail.com"
+      - "testuser@example.com"
     # secondaryTestUsers:
     #   - "loadtest1@yopmail.com"
     #   - "loadtest2@yopmail.com"
     #   - "loadtest3@yopmail.com"
     testPasswords:
-      - "Test12345@"
+      - "SecurePass123!"
       # - "LoadTest123@"
     # companyNames:
     #   - "Acme Corp"

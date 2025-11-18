@@ -30,8 +30,8 @@ config:
       threshold: 500 # 500ms target response time
 
   variables:
-    testUser: "testerdrew7@yopmail.com"
-    testPassword: "Test12345@"
+    testUser: "testuser@example.com"
+    testPassword: "SecurePass123!"
 
 scenarios:
   # User Login and Dashboard Access
