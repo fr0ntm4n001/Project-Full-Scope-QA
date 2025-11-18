@@ -1000,7 +1000,7 @@ playwright_tests:
       --output=test-artifacts \
       --timeout=300000 \
       --workers=1 \
-      --project=chromium \
+      --project=chromium --project=firefox --project=webkit \
       --trace=off \
       --video=off || true
 
@@ -1009,7 +1009,7 @@ playwright_tests:
 
   artifacts:
     when: always
-    expire_in: 7 days
+    expire_in: 30 days
     reports:
       junit: test-results/results.xml
     paths:
@@ -1145,7 +1145,7 @@ services:
 - ✅ **Environment Isolation** - Separate configs for dev/staging/prod
 - ✅ **Docker Containerization** - Consistent environments across pipeline
 - ✅ **Health Checks** - Automated application readiness verification
-- ✅ **Artifact Management** - Test reports stored for 7 days
+- ✅ **Artifact Management** - Test reports stored for 30 days
 - ✅ **Parallel Execution** - Independent stage execution where possible
 - ✅ **Fail-Fast Strategy** - Pipeline stops on critical failures
 - ✅ **Branch Protection** - Production deployments only from main branch
@@ -1178,30 +1178,12 @@ services:
 ```yaml
 artifacts:
   when: always
-  expire_in: 7 days
+  expire_in: 30 days
   reports:
     junit: test-results/results.xml
   paths:
     - playwright-report/index.html
     - test-results/results.xml
-```
-
-### 🛠️ Environment Variables
-
-**Required Variables (GitLab CI/CD Settings):**
-
-```bash
-# Git Authentication
-GIT_USER=your-username
-GIT_PASSWORD=your-token
-
-# Application URLs
-BASE_URL=https://api.demo-app.example.com
-STAGING_URL=https://staging.demo-app.example.com
-
-# Docker Registry (if using private registry)
-DOCKER_REGISTRY_USER=registry-user
-DOCKER_REGISTRY_PASSWORD=registry-password
 ```
 
 ### 🔄 Continuous Deployment Flow
@@ -1249,14 +1231,6 @@ npm run test:e2e
 # Stop containers
 docker compose -f CI_CD_Configs/docker-compose-dev.yml down
 ```
-
-### 🎓 Key Learnings & Improvements
-
-1. **Optimized Test Execution** - Reduced parallel workers from 4 to 1 for stability
-2. **Enhanced Health Checks** - Added timeout-based application readiness verification
-3. **Artifact Management** - Implemented 7-day retention for test results
-4. **Environment Separation** - Clear distinction between dev and prod configurations
-5. **Resource Optimization** - Increased file descriptor limits for large test suites
 
 ---
 
