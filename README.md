@@ -997,90 +997,7 @@ playwright_tests:
     - echo "Test execution completed"
 ```
 
-[🔎 View Complete GitLab CI Configuration](CI_CD_Configs/.gitlab-ci.yml)
-
----
-
-### 🐳 Docker Configuration
-
-**1. Dockerfile**
-
-Containerized Node.js application for consistent deployment across environments.
-
-```dockerfile
-# Use the latest Node.js container as the base image
-FROM node:latest
-
-# Set the working directory
-WORKDIR /app
-
-# Copy dependency files
-COPY package*.json ./
-
-# Install dependencies
-RUN npm install
-
-# Copy the rest of the application code
-COPY . .
-
-# Expose the port used by the app
-EXPOSE 3000
-
-# Start React in development mode and keep the container running
-CMD ["sh"]
-```
-
-[🔎 View Complete Dockerfile](CI_CD_Configs/Dockerfile)
-
----
-
-**2. Docker Compose - Development**
-
-**File: `docker-compose-dev.yml`**
-
-Development environment configuration with hot-reload and debugging capabilities.
-
-```yaml
-services:
-  voicebot-ui:
-    image: voicebot-ui
-    restart: unless-stopped
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: sh -c "npm start & tail -f /dev/null"
-    ports:
-      - 3005:3000
-    env_file:
-      - ./.env.development
-```
-
-[🔎 View Complete Dev Docker Compose](CI_CD_Configs/docker-compose-dev.yml)
-
----
-
-**3. Docker Compose - Production**
-
-**File: `docker-compose-prod.yml`**
-
-Production environment configuration with optimized settings and resource management.
-
-```yaml
-services:
-  voicebot-ui:
-    image: voicebot-ui
-    restart: unless-stopped
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: sh -c "npm start"
-    ports:
-      - 3000:3000
-    env_file:
-      - ./.env.production
-```
-
-[🔎 View Complete Prod Docker Compose](CI_CD_Configs/docker-compose-prod.yml)
+[🔎 View Complete GitLab CI Configuration and other docker configurations](CI_CD_Configs/.gitlab-ci.yml)
 
 ---
 
@@ -1183,27 +1100,6 @@ Run Playwright Tests
 Generate Reports
       ↓
 Notify Team
-```
-
-### 📝 Running Pipeline Locally
-
-**Build and test locally before pushing:**
-
-```bash
-# Build Docker image
-docker build -t voicebot-ui .
-
-# Run development environment
-docker compose -f CI_CD_Configs/docker-compose-dev.yml up -d
-
-# Run production environment
-docker compose -f CI_CD_Configs/docker-compose-prod.yml up -d
-
-# Run tests
-npm run test:e2e
-
-# Stop containers
-docker compose -f CI_CD_Configs/docker-compose-dev.yml down
 ```
 
 ---
