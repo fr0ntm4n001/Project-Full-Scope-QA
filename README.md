@@ -12,16 +12,19 @@
 
 ## 📋 Table of Contents
 
-- [Project Overview](#-project-overview)
-- [Features](#-features)
-- [Technology Stack](#-technology-stack)
-- [Project Structure](#-project-structure)
-- [Getting Started](#-getting-started)
-- [Test Execution](#-test-execution)
-- [Reports & Documentation](#-reports--documentation)
-- [CI/CD Pipeline](#-cicd-pipeline)
-- [QA Methodologies](#-qa-methodologies)
-- [Contributing](#-contributing)
+- [1. Project Overview](#1-project-overview)
+- [2. Project Structure](#2-project-structure)
+- [3. Test Strategy / QA Documentation](#3-test-strategy--qa-documentation)
+- [4. Test Cases](#4-test-cases)
+- [5. Playwright Test Scripts](#5-playwright-test-scripts)
+- [6. Test Reports](#6-test-reports)
+- [7. Bug Reproduction](#7-bug-reproduction)
+- [8. API Testing with Postman](#8-api-testing-with-postman)
+- [9. Performance Testing with Artillery](#9-performance-testing-with-artillery)
+- [10. CI/CD Integration with GitLab](#10-cicd-integration-with-gitlab)
+- [11. QA Achievements](#11--qa-achievements)
+- [12. Contact & Support](#12--contact--support)
+- [13. License](#13--license)
 
 ## 1. Project Overview
 
@@ -30,45 +33,56 @@ Comprehensive QA of the C\*\*\*\*a AI Voice Assistant, combining manual testing,
 ## 2. Project Structure
 
 ```
-sqa-portfolio/
-├── 📄 README.md                    # Project documentation
-├── 📁 docs/                        # QA Documentation
-│   ├── Test_Strategy.md            # Overall testing approach
-│   ├── Test_Plan.md               # Detailed test planning
-│   ├── Bug_Life_Cycle.md          # Bug tracking process
-│   ├── QA_Process.md              # QA workflows
-│   └── Tools_Used.md              # Technology documentation
-├── 📁 test-cases/                  # Test case repository
-│   ├── manual/                    # Manual test cases
-│   │   ├── login_test_cases.csv   # CSV format test cases
-│   │   └── regression_suite.xlsx  # Excel test suites
-│   └── automated/                 # Automated test specs
-│       ├── login_test_cases.json  # JSON test data
-│       └── api_test_data.json     # API test datasets
-├── 📁 tests/                       # Test implementation
-│   ├── unit/                      # Unit test examples
-│   ├── integration/               # Integration tests
-│   ├── api/                       # API test suites
-│   │   ├── auth.spec.js           # Authentication API tests
-│   │   └── users.spec.js          # User management tests
-│   └── e2e/                       # End-to-end tests
-│       ├── login.spec.js          # Login flow tests
-│       ├── checkout.spec.js       # E-commerce workflows
-│       └── admin.spec.js          # Admin panel tests
-├── 📁 reports/                     # Test reports
-│   ├── allure-results/            # Allure test results
-│   ├── html/                      # HTML reports
-│   ├── screenshots/               # Test screenshots
-│   └── videos/                    # Test execution videos
-├── 📁 src/
-
+AI-Voice-Assistant-App-Full-Scope-QA/
+├── 📄 README.md                           # Project documentation
+├── 📄 License                             # License file
+├── 📁 docs/                               # QA Documentation
+│   ├── Test_Strategy.md                   # Overall testing approach
+│   └── Test_Plan.md                       # Detailed test planning
+├── 📁 Test-Cases/                         # Test case repository
+│   ├── View Test Cases Google Sheet       # Link to test cases
+│   ├── 1-Signup.png                       # Signup test cases
+│   ├── 2-Sign-In.png                      # Sign-in test cases
+│   ├── 3-Service.png                      # Service test cases
+│   ├── 4-Dashboard.png                    # Dashboard test cases
+│   ├── 5-Conversation.png                 # Conversation test cases
+│   ├── 6-Company.png                      # Company test cases
+│   ├── 7-Assistant.png                    # Assistant test cases
+│   └── 8-Settings.png                     # Settings test cases
+├── 📁 Test-Scripts/                       # Playwright test scripts
+│   ├── Test-Assistant.spec.js             # Assistant management tests
+│   ├── Test-Login.spec.js                 # Login flow tests
+│   └── Test-Settings.spec.js              # Settings validation tests
+├── 📁 Test-Reports/                       # Test execution reports
+│   ├── artifacts-4_index.html             # Playwright HTML report 1
+│   └── artifacts-5_index.html             # Playwright HTML report 2
+├── 📁 Bug-Reports/                        # Bug documentation
+│   └── Bug reproduction reports           # Detailed bug reports
+├── 📁 Configs/                            # Configuration files
+│   └── playwright.config.js               # Playwright configuration
+├── 📁 Load-Test/                          # Performance testing
+│   ├── load-test.yml                      # Standard load test
+│   ├── stress-test.yml                    # Stress testing config
+│   ├── spike-test.yml                     # Spike testing config
+│   ├── endurance-test.yml                 # Endurance testing config
+│   ├── all-e2e-scenarios.yml              # Comprehensive E2E scenarios
+│   ├── artillery.config.yml               # Artillery global config
+│   ├── README.md                          # Performance testing docs
+│   └── TASK_COMPLETION_REPORT.md          # Load testing report
+└── 📁 CI_CD_Configs/                      # CI/CD configuration files
+    ├── .gitlab-ci.yml                     # GitLab CI/CD pipeline
+    ├── gitlab-ci.yml                      # GitLab CI backup
+    ├── Dockerfile                         # Docker container config
+    ├── docker-compose-dev.yml             # Development environment
+    ├── docker-compose-prod.yml            # Production environment
+    └── Screenshots/                       # Pipeline execution screenshots
 ```
 
 ### Environment Management
 
-- **Development**: Local testing environment
-- **Staging**: Pre-production validation
-- **Production**: Smoke test monitoring
+- **Development**: Local testing environment (Port 3005)
+- **Staging**: Pre-production validation (Port 3005)
+- **Production**: Live environment (Port 3000)
 
 ## 3. Test Strategy / QA Documentation
 
