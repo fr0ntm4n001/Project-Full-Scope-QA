@@ -84,6 +84,8 @@ AI-Voice-Assistant-App-Full-Scope-QA/
 
 ## 3. Test Strategy / QA Documentation
 
+_🚧 (Under Construction , work in progress)_
+
 | Document                                 | Description                                   |
 | ---------------------------------------- | --------------------------------------------- |
 | [Test Strategy](docs/Test_Strategy.md)   | High-level testing approach and methodologies |
