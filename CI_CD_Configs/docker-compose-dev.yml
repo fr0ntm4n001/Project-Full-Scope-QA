@@ -1,0 +1,12 @@
+services:
+  voicebot-ui:
+    image: voicebot-ui
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sh -c "npm start & tail -f /dev/null"
+    ports:
+      - 3005:3000
+    env_file:
+      - ./.env.development

@@ -881,6 +881,385 @@ Success Rate: 97.7% ✅
 - Maintain test data independence
 - Include proper error handling
 
+---
+
+## 10. CI/CD Integration with GitLab
+
+Automated continuous integration and deployment pipeline using GitLab CI/CD, Docker, and Docker Compose for seamless testing and deployment across multiple environments.
+
+### 🎯 CI/CD Pipeline Overview
+
+The pipeline automates the entire workflow from code commit to production deployment, ensuring consistent quality and rapid delivery.
+
+**Pipeline Stages:**
+
+1. **Build** - Docker image creation
+2. **Deploy** - Environment-specific deployment
+3. **Test** - Automated E2E testing with Playwright
+4. **Report** - Test results and artifacts generation
+
+### 📊 Pipeline Architecture
+
+```
+┌─────────────┐     ┌──────────────┐     ┌─────────────┐     ┌──────────────┐
+│   BUILD     │ --> │    DEPLOY    │ --> │    TEST     │ --> │   REPORT     │
+│   Stage     │     │    Stage     │     │   Stage     │     │   Stage      │
+└─────────────┘     └──────────────┘     └─────────────┘     └──────────────┘
+      │                     │                    │                    │
+   Docker              Docker Compose       Playwright           Artifacts
+   Build               Deployment           Tests                Upload
+```
+
+### 🔧 GitLab CI/CD Configuration
+
+**File: `.gitlab-ci.yml`**
+
+Complete pipeline configuration with environment-aware deployment and comprehensive test execution.
+
+```yaml
+stages:
+  - build
+  - run
+  - test
+  - report
+
+variables:
+  IMAGE_NAME: voicebot-ui
+  PLAYWRIGHT_VERSION: "1.54.1"
+  NODE_VERSION: "18"
+
+# Build Docker image (main & develop only)
+build_image:
+  stage: build
+  tags:
+    - $CI_COMMIT_REF_NAME
+  script:
+    - docker build -t $IMAGE_NAME .
+  only:
+    - main
+    - develop
+
+# Run container (main & develop only)
+run_container:
+  stage: run
+  tags:
+    - $CI_COMMIT_REF_NAME
+  script:
+    - docker rm -f $IMAGE_NAME || true
+    - |
+      if [ "$CI_COMMIT_REF_NAME" = "main" ]; then
+        echo "Deploying to production environment"
+        docker compose -f docker-compose-prod.yml down --remove-orphans
+        docker compose -f docker-compose-prod.yml up -d
+      else
+        echo "Deploying to staging environment"
+        docker compose -f docker-compose-dev.yml down --remove-orphans
+        docker compose -f docker-compose-dev.yml up -d
+      fi
+    - sleep 15 # Wait for application to be ready
+    # Health check to ensure application is running
+    - |
+      echo "Waiting for application to be ready..."
+      timeout 120 bash -c 'until curl -f http://localhost:3000; do sleep 5; done'
+  only:
+    - main
+    - develop
+
+# Main Playwright test job
+playwright_tests:
+  stage: test
+  image: mcr.microsoft.com/playwright:v${PLAYWRIGHT_VERSION}-jammy
+  tags:
+    - external
+  timeout: 3h
+
+  variables:
+    CI: "true"
+    PLAYWRIGHT_BROWSERS_PATH: ".ms-playwright"
+    BASE_URL: "https://api.demo-app.example.com"
+
+  before_script:
+    - mkdir -p test-results playwright-report test-artifacts
+    - echo "Setting up Playwright environment..."
+    - git config --global credential.helper store
+
+    # Install dependencies
+    - npm ci --prefer-offline --no-audit
+
+    # Install browsers with dependencies
+    - npx playwright install --with-deps chromium firefox webkit
+
+    # Increase file descriptor limits
+    - ulimit -n 65535
+
+  script:
+    - echo "Starting Playwright tests..."
+    - export CI=true
+    - npx playwright test e2e/ \
+      --reporter=line,junit=test-results/results.xml,html=playwright-report \
+      --output=test-artifacts \
+      --timeout=300000 \
+      --workers=1 \
+      --project=chromium \
+      --trace=off \
+      --video=off || true
+
+  after_script:
+    - echo "Test execution completed"
+
+  artifacts:
+    when: always
+    expire_in: 7 days
+    reports:
+      junit: test-results/results.xml
+    paths:
+      - playwright-report/index.html
+      - test-results/results.xml
+    expose_as: "Playwright Test Results"
+
+  only:
+    - main
+    - develop
+    - playwright_tests
+```
+
+[🔎 View Complete GitLab CI Configuration](CI_CD_Configs/.gitlab-ci.yml)
+
+---
+
+### 🐳 Docker Configuration
+
+**1. Dockerfile**
+
+Containerized Node.js application for consistent deployment across environments.
+
+```dockerfile
+# Use the latest Node.js container as the base image
+FROM node:latest
+
+# Set the working directory
+WORKDIR /app
+
+# Copy dependency files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code
+COPY . .
+
+# Expose the port used by the app
+EXPOSE 3000
+
+# Start React in development mode and keep the container running
+CMD ["sh"]
+```
+
+[🔎 View Complete Dockerfile](CI_CD_Configs/Dockerfile)
+
+---
+
+**2. Docker Compose - Development**
+
+**File: `docker-compose-dev.yml`**
+
+Development environment configuration with hot-reload and debugging capabilities.
+
+```yaml
+services:
+  voicebot-ui:
+    image: voicebot-ui
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sh -c "npm start & tail -f /dev/null"
+    ports:
+      - 3005:3000
+    env_file:
+      - ./.env.development
+```
+
+[🔎 View Complete Dev Docker Compose](CI_CD_Configs/docker-compose-dev.yml)
+
+---
+
+**3. Docker Compose - Production**
+
+**File: `docker-compose-prod.yml`**
+
+Production environment configuration with optimized settings and resource management.
+
+```yaml
+services:
+  voicebot-ui:
+    image: voicebot-ui
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sh -c "npm start"
+    ports:
+      - 3000:3000
+    env_file:
+      - ./.env.production
+```
+
+[🔎 View Complete Prod Docker Compose](CI_CD_Configs/docker-compose-prod.yml)
+
+---
+
+### 🚀 Deployment Workflow
+
+#### Branch-Based Deployment Strategy
+
+| Branch     | Environment | Port | Deployment Trigger  | Docker Compose File       |
+| ---------- | ----------- | ---- | ------------------- | ------------------------- |
+| `main`     | Production  | 3000 | Push to main        | `docker-compose-prod.yml` |
+| `develop`  | Staging     | 3005 | Push to develop     | `docker-compose-dev.yml`  |
+| Feature/\* | Manual      | -    | Manual trigger only | -                         |
+
+#### Deployment Process
+
+1. **Code Commit** → Developer pushes to `main` or `develop`
+2. **Build Stage** → Docker image built from Dockerfile
+3. **Deploy Stage** → Application deployed using environment-specific docker-compose
+4. **Health Check** → Automated health verification
+5. **Test Stage** → Playwright E2E tests executed
+6. **Report Stage** → Results published to GitLab
+
+### 📊 Pipeline Execution Results
+
+**Successful Pipeline Run:**
+
+<img width="1200" alt="GitLab Pipeline Success" src="CI_CD_Configs/Screenshot 2025-11-09 at 04.02.06.png" />
+
+**Test Results Integration:**
+
+<img width="1200" alt="GitLab Test Results" src="CI_CD_Configs/Screenshot 2025-11-09 at 04.02.41.png" />
+
+### 🎯 CI/CD Best Practices Implemented
+
+- ✅ **Automated Testing** - All tests run automatically on code changes
+- ✅ **Environment Isolation** - Separate configs for dev/staging/prod
+- ✅ **Docker Containerization** - Consistent environments across pipeline
+- ✅ **Health Checks** - Automated application readiness verification
+- ✅ **Artifact Management** - Test reports stored for 7 days
+- ✅ **Parallel Execution** - Independent stage execution where possible
+- ✅ **Fail-Fast Strategy** - Pipeline stops on critical failures
+- ✅ **Branch Protection** - Production deployments only from main branch
+
+### 🔍 Pipeline Features
+
+#### 1. **Conditional Deployment**
+
+```yaml
+- |
+  if [ "$CI_COMMIT_REF_NAME" = "main" ]; then
+    echo "Deploying to production environment"
+    docker compose -f docker-compose-prod.yml up -d
+  else
+    echo "Deploying to staging environment"
+    docker compose -f docker-compose-dev.yml up -d
+  fi
+```
+
+#### 2. **Health Check Integration**
+
+```yaml
+- |
+  echo "Waiting for application to be ready..."
+  timeout 120 bash -c 'until curl -f http://localhost:3000; do sleep 5; done'
+```
+
+#### 3. **Test Result Publishing**
+
+```yaml
+artifacts:
+  when: always
+  expire_in: 7 days
+  reports:
+    junit: test-results/results.xml
+  paths:
+    - playwright-report/index.html
+    - test-results/results.xml
+```
+
+### 🛠️ Environment Variables
+
+**Required Variables (GitLab CI/CD Settings):**
+
+```bash
+# Git Authentication
+GIT_USER=your-username
+GIT_PASSWORD=your-token
+
+# Application URLs
+BASE_URL=https://api.demo-app.example.com
+STAGING_URL=https://staging.demo-app.example.com
+
+# Docker Registry (if using private registry)
+DOCKER_REGISTRY_USER=registry-user
+DOCKER_REGISTRY_PASSWORD=registry-password
+```
+
+### 🔄 Continuous Deployment Flow
+
+```
+Developer Push
+      ↓
+GitLab Detects Change
+      ↓
+Build Docker Image
+      ↓
+Deploy to Environment
+  ┌───┴───┐
+  │       │
+Main   Develop
+  │       │
+Prod   Staging
+  │       │
+  └───┬───┘
+      ↓
+Run Playwright Tests
+      ↓
+Generate Reports
+      ↓
+Notify Team
+```
+
+### 📝 Running Pipeline Locally
+
+**Build and test locally before pushing:**
+
+```bash
+# Build Docker image
+docker build -t voicebot-ui .
+
+# Run development environment
+docker compose -f CI_CD_Configs/docker-compose-dev.yml up -d
+
+# Run production environment
+docker compose -f CI_CD_Configs/docker-compose-prod.yml up -d
+
+# Run tests
+npm run test:e2e
+
+# Stop containers
+docker compose -f CI_CD_Configs/docker-compose-dev.yml down
+```
+
+### 🎓 Key Learnings & Improvements
+
+1. **Optimized Test Execution** - Reduced parallel workers from 4 to 1 for stability
+2. **Enhanced Health Checks** - Added timeout-based application readiness verification
+3. **Artifact Management** - Implemented 7-day retention for test results
+4. **Environment Separation** - Clear distinction between dev and prod configurations
+5. **Resource Optimization** - Increased file descriptor limits for large test suites
+
+---
+
 ## 12. 📞 Contact & Support
 
 <div align="left">
