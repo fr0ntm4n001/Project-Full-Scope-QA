@@ -521,7 +521,7 @@ Standard load testing simulating typical production traffic patterns with gradua
 
 ```yaml
 config:
-  target: "https://convoa-1.taild6271e.ts.net"
+  target: "https://api.demo-app.example.com"
   phases:
     # Warm up phase
     - duration: 60
@@ -657,7 +657,7 @@ Progressive load increase to identify system breaking points and maximum capacit
 
 ```yaml
 config:
-  target: "https://convoa-1.taild6271e.ts.net"
+  target: "https://api.demo-app.example.com"
   phases:
     - duration: 60
       arrivalRate: 10
@@ -728,7 +728,7 @@ Tests system resilience to sudden traffic surges, simulating viral events or mar
 
 ```yaml
 config:
-  target: "https://convoa-1.taild6271e.ts.net"
+  target: "https://api.demo-app.example.com"
   phases:
     # Baseline load
     - duration: 60
@@ -792,7 +792,7 @@ Long-duration testing (1 hour) to identify memory leaks, resource exhaustion, an
 
 ```yaml
 config:
-  target: "https://convoa-1.taild6271e.ts.net"
+  target: "https://api.demo-app.example.com"
   phases:
     # Long-duration sustained load test
     - duration: 3600 # 1 hour
@@ -854,7 +854,7 @@ Full user journey testing covering all major application features with realistic
 
 ```yaml
 config:
-  target: "https://convoa-1.taild6271e.ts.net"
+  target: "https://api.demo-app.example.com"
   phases:
     # Warm-up phase
     - duration: 120
@@ -1022,7 +1022,7 @@ config:
           name: "Staging Load"
 
     production:
-      target: "https://convoa-1.taild6271e.ts.net"
+      target: "https://api.demo-app.example.com"
       phases:
         - duration: 60
           arrivalRate: 10

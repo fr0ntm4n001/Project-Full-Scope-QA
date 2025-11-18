@@ -1,5 +1,5 @@
 config:
-  target: "https://convoa-1.taild6271e.ts.net"
+  target: "https://api.demo-app.example.com"
   phases:
     # Warm up phase
     - duration: 60
