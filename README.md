@@ -22,7 +22,7 @@
 - [8. API Testing with Postman](#8-api-testing-with-postman)
 - [9. Performance Testing with Artillery](#9-performance-testing-with-artillery)
 - [10. CI/CD Integration with GitLab](#10-cicd-integration-with-gitlab)
-- [11. QA Achievements](#11--qa-achievements)
+- [11. QA Achievements & Impact](#11--qa-achievements--impact)
 - [12. Contact & Support](#12--contact--support)
 - [13. License](#13--license)
 
