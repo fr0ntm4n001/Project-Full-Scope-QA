@@ -8,7 +8,7 @@
 ![Postman](https://img.shields.io/badge/Postman-FF6C37?logo=postman&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)
 
-> Comprehensive QA of the C\*\*\*\*a AI Voice Assistant, combining manual testing, automated test execution, and performance benchmarking. This project covers test planning, case design, detailed bug reporting, and CI/CD pipeline integration — showcasing end-to-end quality assurance practices using modern tools and frameworks that ensure scalability, reliability, and seamless functionality.
+> C\*\*\*\*a is an AI-powered voice assistant platform that transforms how businesses manage customer communication by acting as a 24/7 virtual receptionist. It handles inbound and outbound calls, schedules appointments, qualifies leads, and seamlessly integrates with thousands of business tools while providing real-time insights.Its natural, human-like voice that adapts to customer interactions, creating more authentic conversations. Beyond call handling, it manages bookings, orders, and even job planning through features like service heat maps, helping businesses optimize resources based on geographic and team data.
 
 ## 📋 Table of Contents
 
@@ -23,11 +23,13 @@
 - [QA Methodologies](#-qa-methodologies)
 - [Contributing](#-contributing)
 
-## 🎯 Project Overview
+## 1. Project Overview
 
-C\*\*\*\*a is an AI-powered voice assistant platform that transforms how businesses manage customer communication by acting as a 24/7 virtual receptionist. It handles inbound and outbound calls, schedules appointments, qualifies leads, and seamlessly integrates with thousands of business tools while providing real-time insights.Its natural, human-like voice that adapts to customer interactions, creating more authentic conversations. Beyond call handling, it manages bookings, orders, and even job planning through features like service heat maps, helping businesses optimize resources based on geographic and team data.
+Comprehensive QA of the C\*\*\*\*a AI Voice Assistant, combining manual testing, automated test execution, and performance benchmarking. This project covers test planning, case design, detailed bug reporting, and CI/CD pipeline integration — showcasing end-to-end quality assurance practices using modern tools and frameworks that ensure scalability, reliability, and seamless functionality.
 
-### 📚 QA Documentation
+## 2. Project Structure
+
+## 3. Test Strategy / QA Documentation
 
 | Document                                 | Description                                   |
 | ---------------------------------------- | --------------------------------------------- |
@@ -37,7 +39,7 @@ C\*\*\*\*a is an AI-powered voice assistant platform that transforms how busines
 | [QA Process](docs/QA_Process.md)         | Quality assurance workflows                   |
 | [Tools Used](docs/Tools_Used.md)         | Technology stack and tool justification       |
 
-## 🧪 Test Cases
+## 4. Test Cases
 
 <img width="1157" height="548" alt="Screenshot 2025-09-24 at 16 24 09" src="https://github.com/user-attachments/assets/d4756ed9-a137-481f-a0c6-222d2488bb4a" />
 <br><br>
@@ -45,7 +47,7 @@ C\*\*\*\*a is an AI-powered voice assistant platform that transforms how busines
 
 [🔎 Explore Detailed Test Cases](./Test-Cases/)
 
-## 2. Playwright Test Scripts
+## 5. Playwright Test Scripts
 
 Playwright is the primary framework used for automated end-to-end testing in this project. It enables reliable, cross-browser automation across Chromium, Firefox and WebKit, supports powerful selector strategies, network interception, tracing, screenshots and video recording, parallel test execution, and built-in test fixtures.
 
@@ -180,7 +182,7 @@ export default defineConfig({
 
 ---
 
-## 3. Test Reports
+## 6. Test Reports
 
 ### Playwright Reports
 
@@ -196,7 +198,7 @@ Below is a snapshot from my automated UI test reports generated using Microsoft 
 
 ---
 
-## 4. Bug Reproduction
+## 7. Bug Reproduction
 
 This section demonstrates systematic bug identification, reproduction, and documentation practices.
 
@@ -206,7 +208,7 @@ This section demonstrates systematic bug identification, reproduction, and docum
 
 ---
 
-## 5. API Testing with Postman
+## 8. API Testing with Postman
 
 Comprehensive API testing ensures backend reliability, data integrity, and proper integration between services. This section showcases RESTful API validation using Postman collections, automated test scripts, and environment management.
 
@@ -478,7 +480,7 @@ pm.environment.set("createdAssistantId", pm.response.json().data.id);
 
 ---
 
-## 6. Performance Testing with Artillery
+## 9. Performance Testing with Artillery
 
 Performance testing ensures the application can handle expected load, identifies bottlenecks, and validates system scalability under various traffic conditions. This comprehensive test suite uses Artillery to simulate real-world user scenarios across authentication, dashboard operations, assistant management, and call analytics.
 
