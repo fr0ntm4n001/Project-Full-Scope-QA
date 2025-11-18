@@ -251,273 +251,136 @@ This section demonstrates systematic bug identification, reproduction, and docum
 
 ## 8. API Testing with Postman
 
-Comprehensive API testing ensures backend reliability, data integrity, and proper integration between services. This section showcases RESTful API validation using Postman collections, automated test scripts, and environment management.
+Backend API validation using Postman to ensure reliable authentication, data integrity, and proper error handling across all endpoints.
 
-### 🔍 API Test Coverage
+### 🔍 What Was Tested
 
-- ✅ **Authentication & Authorization** - Login, token refresh, permissions
-- ✅ **CRUD Operations** - Create, Read, Update, Delete endpoints
-- ✅ **Data Validation** - Schema validation, boundary testing
-- ✅ **Error Handling** - Status codes, error messages
-- ✅ **Performance Testing** - Response times, load testing
-- ✅ **Integration Testing** - Multi-endpoint workflows
+| Category                 | Coverage                                |
+| ------------------------ | --------------------------------------- |
+| **Authentication**       | Login validation, token management      |
+| **Assistant Management** | CRUD operations for AI assistants       |
+| **User Settings**        | Profile updates, preference management  |
+| **Call Logs**            | Historical data retrieval and filtering |
+| **Error Handling**       | Status codes, validation messages       |
+| **Performance**          | Response time benchmarks                |
 
-### 📋 Sample API Test Collection
+### 📋 Key Test Scenarios
 
-#### Test Suite: Authentication API
+#### 1. Authentication Flow
 
-**Endpoint:** `POST /api/v1/auth/login`
-
-**Test Case 1: Successful Login**
-
-```javascript
-// Request
-POST https://api.demo-app.example.com/v1/auth/login
-Content-Type: application/json
-
-{
-  "email": "testuser@example.com",
-  "password": "SecurePass123!"
-}
-
-// Expected Response: 200 OK
-{
-  "success": true,
-  "data": {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-    "refreshToken": "d8f7e6c5b4a3...",
-    "user": {
-      "id": "usr_12345",
-      "email": "testuser@example.com",
-      "role": "agent"
-    }
-  }
-}
-
-// Postman Tests
-pm.test("Status code is 200", function () {
-    pm.response.to.have.status(200);
-});
-
-pm.test("Response contains authentication token", function () {
-    var jsonData = pm.response.json();
-    pm.expect(jsonData.data.token).to.be.a('string');
-    pm.expect(jsonData.data.token).to.have.lengthOf.above(20);
-});
-
-pm.test("User object contains required fields", function () {
-    var jsonData = pm.response.json();
-    pm.expect(jsonData.data.user).to.have.property('id');
-    pm.expect(jsonData.data.user).to.have.property('email');
-    pm.expect(jsonData.data.user).to.have.property('role');
-});
-
-// Save token for subsequent requests
-pm.environment.set("authToken", pm.response.json().data.token);
-```
-
----
-
-**Test Case 2: Invalid Credentials**
+**Login with Valid Credentials** → Verify 200 status, token generation, user data structure
 
 ```javascript
-// Request
-POST https://api.demo-app.example.com/v1/auth/login
-Content-Type: application/json
-
-{
-  "email": "testuser@example.com",
-  "password": "WrongPassword"
-}
-
-// Expected Response: 401 Unauthorized
-{
-  "success": false,
-  "error": {
-    "code": "INVALID_CREDENTIALS",
-    "message": "Email or password is incorrect"
-  }
-}
-
-// Postman Tests
-pm.test("Status code is 401", function () {
-    pm.response.to.have.status(401);
-});
-
-pm.test("Error message is present", function () {
-    var jsonData = pm.response.json();
-    pm.expect(jsonData.success).to.be.false;
-    pm.expect(jsonData.error.message).to.include("incorrect");
+pm.test("Successful login returns auth token", function () {
+  var jsonData = pm.response.json();
+  pm.expect(jsonData.data.token).to.be.a("string");
+  pm.expect(jsonData.data.user).to.have.property("email");
+  pm.environment.set("authToken", jsonData.data.token);
 });
 ```
 
----
+**Login with Invalid Credentials** → Verify 401 error, appropriate error message
 
-**Test Case 3: Missing Required Fields**
+**Missing Required Fields** → Verify 400 validation error with field-specific feedback
+
+#### 2. Assistant Management Operations
+
+**List All Assistants** → Validate array response, required fields, response time < 500ms
+
+**Create New Assistant** → Verify 201 status, assistant ID generation, proper data persistence
 
 ```javascript
-// Request
-POST https://api.demo-app.example.com/v1/auth/login
-Content-Type: application/json
-
-{
-  "email": "testuser@example.com"
-}
-
-// Expected Response: 400 Bad Request
-{
-  "success": false,
-  "error": {
-    "code": "VALIDATION_ERROR",
-    "message": "Password is required",
-    "fields": ["password"]
-  }
-}
-
-// Postman Tests
-pm.test("Status code is 400", function () {
-    pm.response.to.have.status(400);
-});
-
-pm.test("Validation error is returned", function () {
-    var jsonData = pm.response.json();
-    pm.expect(jsonData.error.code).to.equal("VALIDATION_ERROR");
-    pm.expect(jsonData.error.fields).to.include("password");
+pm.test("Assistant created with valid ID", function () {
+  var jsonData = pm.response.json();
+  pm.expect(jsonData.data.id).to.match(/^ast_/);
+  pm.expect(jsonData.data.name).to.equal(pm.variables.get("assistantName"));
 });
 ```
 
----
+**Unauthorized Access** → Test authentication requirement with missing/invalid tokens
 
-#### Test Suite: Assistant Management API
+### 📊 Test Execution Results
 
-**Endpoint:** `GET /api/v1/assistants`
+**Overall Performance:**
 
-```javascript
-// Request
-GET https://api.demo-app.example.com/v1/assistants
-Authorization: Bearer {{authToken}}
+| Metric                    | Result            |
+| ------------------------- | ----------------- |
+| **Total API Tests**       | 67                |
+| **Pass Rate**             | 98.5%             |
+| **Average Response Time** | 294ms             |
+| **Fastest Endpoint**      | 198ms (Settings)  |
+| **Slowest Endpoint**      | 421ms (Call Logs) |
 
-// Expected Response: 200 OK
-{
-  "success": true,
-  "data": {
-    "assistants": [
-      {
-        "id": "ast_67890",
-        "name": "Customer Support Bot",
-        "status": "active",
-        "created_at": "2025-10-15T10:30:00Z"
-      }
-    ],
-    "total": 1,
-    "page": 1
-  }
-}
-
-// Postman Tests
-pm.test("Status code is 200", function () {
-    pm.response.to.have.status(200);
-});
-
-pm.test("Response time is less than 500ms", function () {
-    pm.expect(pm.response.responseTime).to.be.below(500);
-});
-
-pm.test("Assistants array is present", function () {
-    var jsonData = pm.response.json();
-    pm.expect(jsonData.data.assistants).to.be.an('array');
-});
-
-pm.test("Each assistant has required fields", function () {
-    var jsonData = pm.response.json();
-    jsonData.data.assistants.forEach(function(assistant) {
-        pm.expect(assistant).to.have.property('id');
-        pm.expect(assistant).to.have.property('name');
-        pm.expect(assistant).to.have.property('status');
-    });
-});
-```
-
----
-
-**Endpoint:** `POST /api/v1/assistants`
-
-```javascript
-// Request
-POST https://api.demo-app.example.com/v1/assistants
-Authorization: Bearer {{authToken}}
-Content-Type: application/json
-
-{
-  "name": "New Sales Assistant",
-  "description": "Handles sales inquiries",
-  "voice": "en-US-Standard-A",
-  "settings": {
-    "temperature": 0.7,
-    "max_tokens": 150
-  }
-}
-
-// Expected Response: 201 Created
-{
-  "success": true,
-  "data": {
-    "id": "ast_99999",
-    "name": "New Sales Assistant",
-    "status": "active",
-    "created_at": "2025-10-26T14:22:00Z"
-  }
-}
-
-// Postman Tests
-pm.test("Status code is 201", function () {
-    pm.response.to.have.status(201);
-});
-
-pm.test("Assistant created successfully", function () {
-    var jsonData = pm.response.json();
-    pm.expect(jsonData.success).to.be.true;
-    pm.expect(jsonData.data.id).to.be.a('string');
-    pm.expect(jsonData.data.name).to.equal("New Sales Assistant");
-});
-
-// Save assistant ID for cleanup
-pm.environment.set("createdAssistantId", pm.response.json().data.id);
-```
-
----
-
-### 📊 API Test Results Summary
-
-| Test Suite     | Total Tests | Passed | Failed | Response Time (avg) |
-| -------------- | ----------- | ------ | ------ | ------------------- |
-| Authentication | 15          | 15     | 0      | 245ms               |
-| Assistants     | 22          | 21     | 1      | 312ms               |
-| Settings       | 18          | 18     | 0      | 198ms               |
-| Call Logs      | 12          | 12     | 0      | 421ms               |
-| **Total**      | **67**      | **66** | **1**  | **294ms**           |
-
-**Collection Structure:**
+**Test Distribution:**
 
 ```
-📁 AI Voice Assistant API Tests
-├── 📁 Authentication
-│   ├── POST Login
-│   ├── POST Refresh Token
-│   └── POST Logout
-├── 📁 Assistants
-│   ├── GET List Assistants
-│   ├── POST Create Assistant
-│   ├── GET Assistant Details
-│   ├── PUT Update Assistant
-│   └── DELETE Delete Assistant
-├── 📁 Settings
-│   ├── GET User Settings
-│   └── PUT Update Settings
-└── 📁 Call Logs
-    ├── GET Call History
-    └── GET Call Details
+Authentication APIs    ████████████████ 15 tests (100% pass)
+Assistant Management   ██████████████████████ 22 tests (95.4% pass)
+Settings APIs          ████████████████ 18 tests (100% pass)
+Call Logs APIs         ████████████ 12 tests (100% pass)
 ```
+
+### 🎯 Key Validations Implemented
+
+✅ **Status Code Verification** - All responses return correct HTTP codes  
+✅ **Response Schema Validation** - JSON structure matches expected format  
+✅ **Data Type Checking** - Fields contain appropriate data types (string, number, array)  
+✅ **Authentication Token Management** - Tokens properly saved and reused across requests  
+✅ **Error Message Accuracy** - Failed requests return helpful error descriptions  
+✅ **Response Time Monitoring** - Performance tracked against 500ms threshold
+
+### 📁 Postman Collection Structure
+
+```
+📦 AI Voice Assistant API Collection
+│
+├── 🔐 Authentication (15 tests)
+│   ├── ✅ POST /auth/login - Valid credentials
+│   ├── ❌ POST /auth/login - Invalid password
+│   ├── ❌ POST /auth/login - Missing email
+│   ├── ✅ POST /auth/refresh - Token refresh
+│   └── ✅ POST /auth/logout - Session termination
+│
+├── 🤖 Assistants (22 tests)
+│   ├── ✅ GET /assistants - List all
+│   ├── ✅ POST /assistants - Create new
+│   ├── ✅ GET /assistants/:id - Get details
+│   ├── ✅ PUT /assistants/:id - Update existing
+│   ├── ✅ DELETE /assistants/:id - Remove assistant
+│   └── ❌ POST /assistants - Duplicate name validation
+│
+├── ⚙️ Settings (18 tests)
+│   ├── ✅ GET /settings - Retrieve user settings
+│   ├── ✅ PUT /settings/name - Update profile name
+│   └── ❌ PUT /settings/email - Verify email is locked
+│
+└── 📞 Call Logs (12 tests)
+    ├── ✅ GET /calls - Retrieve call history
+    ├── ✅ GET /calls/:id - Get call details
+    └── ✅ GET /calls?filter=date - Filter by date range
+```
+
+### 🔧 Environment Configuration
+
+**Variables Used:**
+
+- `baseUrl` - API endpoint URL
+- `authToken` - Bearer token for authenticated requests
+- `testEmail` - Test user credentials
+- `assistantId` - Dynamically generated IDs for cleanup
+
+**Pre-request Scripts:**
+
+- Automatic timestamp generation
+- Random test data creation
+- Environment variable management
+
+**Test Scripts:**
+
+- Response validation
+- Token extraction and storage
+- Performance monitoring
+- Cleanup operations
 
 ---
 
