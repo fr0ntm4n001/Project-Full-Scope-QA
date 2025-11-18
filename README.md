@@ -997,7 +997,7 @@ playwright_tests:
     - echo "Test execution completed"
 ```
 
-[🔎 View Complete GitLab CI Configuration and other docker configurations](CI_CD_Configs/.gitlab-ci.yml)
+[🔎 View Complete GitLab CI Configuration and Other Docker Configurations](CI_CD_Configs/.gitlab-ci.yml)
 
 ---
 
