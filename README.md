@@ -1146,14 +1146,14 @@ Notify Team
   <a href="https://www.linkedin.com/in/fahad-s-satti-160355218/" target="_blank" rel="noopener noreferrer">
     <img width="auto" height="72" 
          alt="LinkedIn" 
-         src="images/linkedin_logo.png" />
+         src="Images/linkedin_logo.png" />
   </a>
   &nbsp;&nbsp;
   <!-- Gmail -->
   <a href="https://mail.google.com/mail/?view=cm&fs=1&to=workwithfahadsatti@gmail.com" target="_blank" rel="noopener noreferrer">
     <img width="auto" height="72" 
          alt="Gmail" 
-         src="images/gmail_logo.png" />
+         src="Images/gmail_logo.png" />
   </a>
 
 </div>
