@@ -96,9 +96,9 @@ _🚧 (Under Construction , work in progress in this section only)_
 
 ## 4. Test Cases
 
-![Test Cases Overview 1](Test-Cases/1-Signup.png)
+![Test Cases Overview 1](Test-Cases/2-Sign-In.png)
 <br><br>
-![Test Cases Overview 2](Test-Cases/2-Sign-In.png)
+![Test Cases Overview 2](Test-Cases/3-Service.png)
 
 [🔎 Explore Detailed Test Cases](./Test-Cases/)
 
@@ -243,9 +243,9 @@ export default defineConfig({
 
 Below is a snapshot from my automated UI test reports generated using Microsoft Playwright.
 
-![Playwright Test Report 1](Test-Reports/artifacts-4_index.html)
+![Playwright Test Report 1](Images/Test-Report_img_1.png)
 <br><br>
-![Playwright Test Report 2](Test-Reports/artifacts-5_index.html)
+![Playwright Test Report 2](Images/Test-Report_img_2.png)
 
 [🔎 Get Report Html Files ](Test-Reports/)
 
@@ -257,7 +257,7 @@ Below is a snapshot from my automated UI test reports generated using Microsoft 
 
 This section demonstrates systematic bug identification, reproduction, and documentation practices.
 
-![Bug Report Example](Bug-Reports/CB_36_Email_Activation_Bug_Report.png)
+![Bug Report Example](Images/cb_37_file_size_Bva.png)
 
 [🔎 View More Bug Reports](Bug-Reports/)
 
