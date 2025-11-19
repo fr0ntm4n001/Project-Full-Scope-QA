@@ -96,9 +96,9 @@ _🚧 (Under Construction , work in progress in this section only)_
 
 ## 4. Test Cases
 
-<img width="1157" height="548" alt="Screenshot 2025-09-24 at 16 24 09" src="https://github.com/user-attachments/assets/d4756ed9-a137-481f-a0c6-222d2488bb4a" />
+![Test Cases Overview 1](Test-Cases/1-Signup.png)
 <br><br>
-<img width="1022" height="568" alt="Screenshot 2025-09-24 at 16 25 53" src="https://github.com/user-attachments/assets/930e32ab-eede-4cd0-89e4-e8029995c5d5" />
+![Test Cases Overview 2](Test-Cases/2-Sign-In.png)
 
 [🔎 Explore Detailed Test Cases](./Test-Cases/)
 
@@ -243,9 +243,9 @@ export default defineConfig({
 
 Below is a snapshot from my automated UI test reports generated using Microsoft Playwright.
 
-<img width="1351" height="778" alt="Screenshot 2025-10-08 at 18 57 56" src="https://github.com/user-attachments/assets/b248714a-d2c8-4b06-ae7f-9bb415120911" />
+![Playwright Test Report 1](Test-Reports/artifacts-4_index.html)
 <br><br>
-<img width="1351" height="778" alt="Screenshot 2025-10-08 at 18 58 36" src="https://github.com/user-attachments/assets/d8a1c9ff-1e13-4738-b358-0ddf27718c72" />
+![Playwright Test Report 2](Test-Reports/artifacts-5_index.html)
 
 [🔎 Get Report Html Files ](Test-Reports/)
 
@@ -257,7 +257,7 @@ Below is a snapshot from my automated UI test reports generated using Microsoft 
 
 This section demonstrates systematic bug identification, reproduction, and documentation practices.
 
-<img width="780" height="2321" alt="Add a heading (2)" src="https://github.com/user-attachments/assets/46dbb77c-3eec-4196-9299-f181574efd57" />
+![Bug Report Example](Bug-Reports/CB_36_Email_Activation_Bug_Report.png)
 
 [🔎 View More Bug Reports](Bug-Reports/)
 
@@ -1144,16 +1144,12 @@ Notify Team
   <!-- LinkedIn -->
    &nbsp;
   <a href="https://www.linkedin.com/in/fahad-s-satti-160355218/" target="_blank" rel="noopener noreferrer">
-    <img width="auto" height="72" 
-         alt="LinkedIn" 
-         src="https://github.com/user-attachments/assets/be222ed3-fec6-4f0e-b14b-bf80d8978079" />
+    <img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />
   </a>
   &nbsp;&nbsp;
   <!-- Gmail -->
-  <a href="https://mail.google.com/mail/?view=cm&fs=1&to=workwithfahadsatti@gmail.com" target="_blank" rel="noopener noreferrer">
-    <img width="auto" height="72" 
-         alt="Gmail" 
-         src="https://github.com/user-attachments/assets/3f1c7323-8a5b-4149-b35c-faccaccd22a6" />
+  <a href="mailto:workwithfahadsatti@gmail.com" target="_blank" rel="noopener noreferrer">
+    <img alt="Gmail" src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" />
   </a>
 
 </div>
